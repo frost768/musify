@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:spotify_clone/data/playlists.dart';
+import 'package:spotify_clone/models/track.dart';
 import 'package:spotify_clone/views/views.dart';
 
 class PlayerNarrow extends StatefulWidget {
-  PlayerNarrow({Key? key}) : super(key: key);
+  Track track;
+  PlayerNarrow(Track this.track, {Key? key}) : super(key: key);
 
   @override
   _PlayerNarrowState createState() => _PlayerNarrowState();
@@ -29,39 +32,51 @@ class _PlayerNarrowState extends State<PlayerNarrow> {
           ),
           // Song Info
           Expanded(
-            flex: 4,
-            child: Container(
-              margin: _margin,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Row(
-                      children: [
-                        Text(
-                          'Believe',
-                          style: kSongNameStyle,
+            flex: 2,
+            child: PageView(
+              onPageChanged: (value) {
+                setState(() {
+                  widget.track = rap[value];
+                  widget.track.isPlaying = true;
+                });
+              },
+              children: rap
+                  .map((e) => Container(
+                        margin: _margin,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    widget.track.name,
+                                    style: kSongNameStyle,
+                                  ),
+                                  Text(' '),
+                                  Text(
+                                    '•',
+                                    style: kArtistStyle.copyWith(fontSize: 15),
+                                  ),
+                                  Text(' '),
+                                  Text(
+                                    widget.track.artist,
+                                    style: kArtistStyle,
+                                  )
+                                ],
+                              ),
+                            ),
+                            Offstage(
+                              child: Text(
+                                'Kullanılabilir Cihazlar',
+                                style: kSongNameStyle,
+                              ),
+                            )
+                          ],
                         ),
-                        Text(
-                          '*',
-                          style: kArtistStyle,
-                        ),
-                        Text(
-                          'Eminem',
-                          style: kArtistStyle,
-                        )
-                      ],
-                    ),
-                  ),
-                  Offstage(
-                    child: Text(
-                      'Kullanılabilir Cihazlar',
-                      style: kSongNameStyle,
-                    ),
-                  )
-                ],
-              ),
+                      ))
+                  .toList(),
             ),
           ),
           // Like And Play
@@ -69,11 +84,29 @@ class _PlayerNarrowState extends State<PlayerNarrow> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Icon(
-                  Icons.favorite,
-                  color: Colors.white,
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.track.liked = !widget.track.liked;
+                    });
+                  },
+                  icon: Icon(
+                      widget.track.liked
+                          ? Icons.favorite
+                          : Icons.favorite_outline,
+                      color: widget.track.liked ? Colors.green : Colors.white),
                 ),
-                Icon(Icons.play_arrow, color: Colors.white),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.track.isPlaying = !widget.track.isPlaying;
+                    });
+                  },
+                  icon: Icon(
+                    widget.track.isPlaying ? Icons.pause : Icons.play_arrow,
+                    color: Colors.white,
+                  ),
+                )
               ],
             ),
           )

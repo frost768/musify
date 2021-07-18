@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_clone/components/player_narrow.dart';
+import 'package:spotify_clone/data/playlists.dart';
 import 'package:spotify_clone/views/views.dart';
 
 void main() => runApp(MyApp());
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          PlayerNarrow(),
+          PlayerNarrow(rap[0]),
           Divider(
             height: 2,
             color: kMainBackColor,
