@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:spotify_clone/components/home_horizontal_slider.dart';
 import 'package:spotify_clone/consts.dart';
 
-TextStyle kHeadingTitle =
-    TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25);
 TextStyle kTableTitle =
     TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15);
 
@@ -16,106 +15,13 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.only(left: 10),
+      padding: kMarginLeft10,
       child: Column(children: [
         SizedBox(
           height: 20,
         ),
-        Container(
-          height: 50,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Icon(
-                Icons.settings,
-                color: Colors.white,
-              )
-            ],
-          ),
-        ),
-        Container(
-            height: 250,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                    flex: 1,
-                    child: Text(
-                      'Günaydın',
-                      style: kHeadingTitle,
-                    )),
-                Expanded(
-                  flex: 6,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: List.generate(
-                            3,
-                            (index) => Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.all(10),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 10),
-                                      child: Text(
-                                        'Başlık',
-                                        style: kTableTitle,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: List.generate(
-                            3,
-                            (index) => Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.all(10),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Container(
-                                        margin: const EdgeInsets.only(left: 10),
-                                        child: Text(
-                                          'Başlık',
-                                          style: kTableTitle,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            )),
+        SettingsBar(),
+        HomePlaylistSection(),
         HomeHorizontalSlider('Yakında Çalınanlar'),
         HomeHorizontalSlider('Benzersiz Seçimlerin'),
         HomeHorizontalSlider('Geri Atla'),
@@ -124,62 +30,117 @@ class HomeView extends StatelessWidget {
   }
 }
 
-class HomeHorizontalSlider extends StatelessWidget {
-  String title = '';
-  HomeHorizontalSlider(
-    this.title, {
+class SettingsBar extends StatelessWidget {
+  const SettingsBar({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 180,
-      margin: const EdgeInsets.only(top: 50),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      height: 50,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Expanded(
-              child: Text(
-            title,
-            style: kHeadingTitle,
-          )),
-          Expanded(
-            flex: 4,
-            child: Container(
-              margin: const EdgeInsets.only(top: 10),
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: List.generate(
-                    10,
-                    (index) => Container(
-                          margin: const EdgeInsets.only(left: 10),
-                          // color: Colors.green,
-                          width: 100,
-                          // height: 100,
-                          decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              shape: BoxShape.rectangle),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(flex: 4, child: Placeholder()),
-                              Expanded(
-                                child: Container(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: Text(
-                                      'Başlık',
-                                      style: TextStyle(color: Colors.white),
-                                    )),
-                              )
-                            ],
-                          ),
-                        )),
-              ),
-            ),
+          Icon(
+            Icons.settings,
+            color: Colors.white,
           )
         ],
       ),
     );
+  }
+}
+
+class HomePlaylistSection extends StatelessWidget {
+  const HomePlaylistSection({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 250,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+                flex: 1,
+                child: Text(
+                  'Günaydın',
+                  style: kHeadingTitle,
+                )),
+            Expanded(
+              flex: 6,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: List.generate(
+                        3,
+                        (index) => Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Container(
+                                  margin: kMarginLeft10,
+                                  child: Text(
+                                    'Başlık',
+                                    style: kTableTitle,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: List.generate(
+                        3,
+                        (index) => Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    margin: kMarginLeft10,
+                                    child: Text(
+                                      'Başlık',
+                                      style: kTableTitle,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ));
   }
 }
