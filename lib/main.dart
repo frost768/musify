@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:spotify_clone/components/player_narrow.dart';
-import 'package:spotify_clone/data/playlists.dart';
+import 'package:spotify_clone/controllers/PlayerController.dart';
 import 'package:spotify_clone/views/views.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  Get.put(PlayerController());
+  runApp(MyApp());
+}
 
 final List<Widget> _pages = [HomeView(), SearchView(), LibraryView()];
 
@@ -15,7 +19,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(primaryColor: kMainColor),
       themeMode: ThemeMode.dark,
       home: Scaffold(
@@ -56,7 +60,7 @@ class MyApp extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          PlayerNarrow(rap[0]),
+          PlayerNarrow(),
           Divider(
             height: 2,
             color: kMainBackColor,
