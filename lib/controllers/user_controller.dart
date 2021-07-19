@@ -5,6 +5,7 @@ import 'package:spotify_clone/models/user.dart';
 
 class UserController extends GetxController {
   User user = User(0, 'frost768');
+  String createPlaylistName = '';
   List<Playlist> get playlists => user.playlists;
   List<Track> get favorites => user.favorites;
   void addToFavorites(Track track) {
@@ -16,10 +17,18 @@ class UserController extends GetxController {
 
   void removeFromFavorites(int trackId) {
     user.favorites.removeWhere((element) => element.id == trackId);
+    update();
   }
 
-  void createPlaylist(String name, {List<Track> tracks = const []}) {
+  void createPlaylist({String? name, List<Track> tracks = const []}) {
+    if (createPlaylistName.isEmpty)
+      name = 'Çalma listem No.${user.playlists.length + 1}';
+    else {
+      name = createPlaylistName;
+    }
+
     Playlist playlist = Playlist(1, name, tracks: tracks, createdBy: user);
     user.playlists.add(playlist);
+    update();
   }
 }

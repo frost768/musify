@@ -9,3 +9,16 @@ const kMarginLeft10 = EdgeInsets.only(left: 10);
 const kMarginTop10 = EdgeInsets.only(top: 10);
 const TextStyle kHeadingTitle =
     TextStyle(fontWeight: FontWeight.bold, fontSize: 25);
+
+const TextStyle kLibraryTabStyle =
+    TextStyle(fontWeight: FontWeight.bold, fontSize: 14);
+const TextStyle kLibraryHeaderTabStyle =
+    TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 28);
+const TextStyle kCreatePlayListTitleStyle =
+    TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18);
+const TextStyle kCreatePlayListButtonCancelTextStyle =
+    TextStyle(color: Colors.white70, fontSize: 13);
+const TextStyle kCreatePlayListButtonCreateTextStyle =
+    TextStyle(color: Colors.green, fontSize: 13);
+const TextStyle kCreatePlaylistSearchTextStyle =
+    TextStyle(color: Colors.white, fontSize: 30);

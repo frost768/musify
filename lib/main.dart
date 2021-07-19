@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:spotify_clone/components/player_narrow.dart';
 import 'package:spotify_clone/controllers/player_controller.dart';
 import 'package:spotify_clone/controllers/user_controller.dart';
+import 'package:spotify_clone/views/create_playlist.dart';
 import 'package:spotify_clone/views/views.dart';
 
 void main() {
@@ -22,10 +23,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      theme:
-          ThemeData(primaryColor: kMainColor, accentColor: Colors.greenAccent),
+      theme: ThemeData(primaryColor: kMainColor, accentColor: Colors.green),
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.dark,
+      routes: {
+        'CreatePlaylist': (_) => CreatePlaylist(),
+      },
       home: Scaffold(
         backgroundColor: kMainBackColor,
         body: PageView(
