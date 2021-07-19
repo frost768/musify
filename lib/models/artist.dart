@@ -7,5 +7,5 @@ class Artist extends BaseModel {
   List<Album> albums;
   Artist(int id, String name, this.listenerCount,
       {this.isFollowing = false, this.albums = const []})
-      : super(id: 0, name: name);
+      : super(id: id, name: name);
 }

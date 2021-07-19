@@ -4,11 +4,15 @@ import 'package:spotify_clone/models/base_model.dart';
 import 'package:spotify_clone/models/track.dart';
 
 class Album extends BaseModel {
-  Artist? artist = spofityArtist;
-  List<Track> tracks = const [];
+  String albumArtUrl;
+  int artistId;
+  bool isFavorite = false;
+  Duration get duration => tracks.map((e) => e.duration).reduce((prev, curr) =>
+      Duration(milliseconds: prev.inMilliseconds + curr.inMilliseconds));
+  Artist get artist => artists.firstWhere((artist) => artist.id == artistId);
+  List<Track> tracks;
 
-  Album(int id, String name, {this.artist}) : super() {
-    this.id = id;
-    this.name = name;
-  }
+  Album(int id, String name,
+      {this.artistId = 0, this.tracks = const [], this.albumArtUrl = ''})
+      : super(id: id, name: name);
 }
