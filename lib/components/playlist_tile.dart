@@ -9,7 +9,7 @@ class PlaylistTile extends StatelessWidget {
   final playlistContainer = Container(
     height: 50,
     width: 50,
-    child: Icon(Icons.music_note_sharp),
+    child: Icon(Icons.library_music_sharp),
   );
   final favContainer = Container(
     height: 50,
@@ -44,7 +44,12 @@ class PlaylistTile extends StatelessWidget {
         title,
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
-      subtitle: subtitle == null ? null : Text(subtitle!),
+      subtitle: subtitle == null
+          ? null
+          : Text(
+              subtitle!,
+              style: TextStyle(fontSize: 13),
+            ),
     );
   }
 }

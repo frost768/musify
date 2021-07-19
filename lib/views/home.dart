@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:spotify_clone/components/home_horizontal_slider.dart';
 import 'package:spotify_clone/consts.dart';
 import 'package:spotify_clone/controllers/user_controller.dart';
-import 'package:spotify_clone/data/playlists.dart';
 
 TextStyle kTableTitle = TextStyle(fontWeight: FontWeight.bold, fontSize: 15);
 
@@ -75,8 +74,10 @@ class HomePlaylistSection extends StatelessWidget {
                   )),
               Expanded(
                   flex: 6,
-                  child: Wrap(
-                    children: playlists
+                  child: GridView.count(
+                    childAspectRatio: 3 / 1,
+                    crossAxisCount: 2,
+                    children: user.playlists
                         .map((e) => Container(
                               margin: const EdgeInsets.all(10),
                               child: Row(
@@ -88,8 +89,10 @@ class HomePlaylistSection extends StatelessWidget {
                                   ),
                                   Container(
                                     margin: kMarginLeft10,
+                                    width: 100,
                                     child: Text(
                                       e.name,
+                                      overflow: TextOverflow.fade,
                                       style: kTableTitle,
                                     ),
                                   )

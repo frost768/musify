@@ -29,7 +29,6 @@ class PlayerFull extends StatelessWidget {
 
 class PlayerControls extends StatelessWidget {
   PlayerControls({Key? key}) : super(key: key);
-// PlayerController player = Get.find();
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
@@ -152,7 +151,6 @@ class PlayerControls extends StatelessWidget {
 
 class ScrollableArt extends GetWidget<PlayerController> {
   ScrollableArt({Key? key}) : super(key: key);
-  // PlayerController player = Get.find<PlayerController>();
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +192,7 @@ class Header extends GetWidget<PlayerController> {
                 style: kHeaderTitleStyle,
               ),
               Text(
-                player.track.album,
+                player.track.album.name,
                 style: kAlbumNameStyle,
               )
             ],

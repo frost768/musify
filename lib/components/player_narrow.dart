@@ -23,7 +23,6 @@ class PlayerNarrow extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // Album Art
             Expanded(
               flex: 2,
               child: GestureDetector(
@@ -36,6 +35,7 @@ class PlayerNarrow extends StatelessWidget {
                 },
                 child: Row(
                   children: [
+                    // Album Art
                     Container(
                       width: kPlayerNarrowHeight,
                     ),
