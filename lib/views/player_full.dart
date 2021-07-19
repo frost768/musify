@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spotify_clone/controllers/PlayerController.dart';
+import 'package:spotify_clone/controllers/player_controller.dart';
 
 import 'package:spotify_clone/views/views.dart';
 
@@ -47,13 +47,11 @@ class PlayerControls extends StatelessWidget {
                   children: [
                     Text(
                       player.track.name,
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      player.track.artist,
+                      player.track.artist.name,
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey,
@@ -77,10 +75,10 @@ class PlayerControls extends StatelessWidget {
               () => Slider(
                 inactiveColor: Colors.black12,
                 activeColor: Colors.black38,
-                value: player.time.value,
+                value: player.time.value.toDouble(),
                 max: player.track.duration.inSeconds.toDouble(),
                 onChanged: (value) {
-                  player.time.value = value;
+                  player.time.value = value.toInt();
                 },
               ),
             ),
@@ -88,14 +86,8 @@ class PlayerControls extends StatelessWidget {
               () => Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(player.elapsedTimeString,
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  Text(player.trackDurationString,
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
+                  Text(player.elapsedTimeString, style: TextStyle()),
+                  Text(player.trackDurationString, style: TextStyle()),
                 ],
               ),
             ),
@@ -103,20 +95,17 @@ class PlayerControls extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                    color: Colors.white,
                     iconSize: 20,
                     onPressed: () {},
                     icon: Icon(Icons.shuffle_sharp)),
                 IconButton(
-                    color: Colors.white,
                     iconSize: 50,
                     onPressed: () {
                       player.previous();
                     },
                     icon: Icon(Icons.skip_previous_sharp)),
                 Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white, shape: BoxShape.circle),
+                  decoration: BoxDecoration(shape: BoxShape.circle),
                   child: IconButton(
                       iconSize: 50,
                       onPressed: () {
@@ -127,14 +116,12 @@ class PlayerControls extends StatelessWidget {
                           : Icons.play_arrow_sharp)),
                 ),
                 IconButton(
-                    color: Colors.white,
                     iconSize: 50,
                     onPressed: () {
                       player.next();
                     },
                     icon: Icon(Icons.skip_next_sharp)),
                 IconButton(
-                  color: Colors.white,
                   iconSize: 20,
                   onPressed: () {},
                   icon: Icon(Icons.repeat_sharp),
@@ -145,13 +132,11 @@ class PlayerControls extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  color: Colors.white,
                   iconSize: 20,
                   onPressed: () {},
                   icon: Icon(Icons.tv),
                 ),
                 IconButton(
-                  color: Colors.white,
                   iconSize: 20,
                   onPressed: () {},
                   icon: Icon(Icons.playlist_play),
@@ -175,9 +160,7 @@ class ScrollableArt extends GetWidget<PlayerController> {
       margin: const EdgeInsets.symmetric(vertical: 50),
       height: 350,
       width: 350,
-      child: Placeholder(
-        color: Colors.white,
-      ),
+      child: Placeholder(),
     );
   }
 }
@@ -188,8 +171,7 @@ class Header extends GetWidget<PlayerController> {
   }) : super(key: key);
 
   final kHeaderTitleStyle = TextStyle(fontSize: 12, color: Colors.grey);
-  final kAlbumNameStyle =
-      TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold);
+  final kAlbumNameStyle = TextStyle(fontSize: 14, fontWeight: FontWeight.bold);
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
@@ -203,7 +185,6 @@ class Header extends GetWidget<PlayerController> {
               },
               icon: Icon(
                 Icons.arrow_drop_down_circle_sharp,
-                color: Colors.white,
               )),
           Expanded(
               child: Column(
@@ -224,7 +205,6 @@ class Header extends GetWidget<PlayerController> {
               },
               icon: Icon(
                 Icons.more_vert,
-                color: Colors.white,
               )),
         ],
       ),

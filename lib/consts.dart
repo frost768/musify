@@ -8,4 +8,4 @@ const kMainBackColor = Color(0xff171717);
 const kMarginLeft10 = EdgeInsets.only(left: 10);
 const kMarginTop10 = EdgeInsets.only(top: 10);
 const TextStyle kHeadingTitle =
-    TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25);
+    TextStyle(fontWeight: FontWeight.bold, fontSize: 25);

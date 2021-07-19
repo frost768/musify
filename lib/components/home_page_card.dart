@@ -20,7 +20,6 @@ class HomePageCard extends StatelessWidget {
                 margin: kMarginTop10,
                 child: Text(
                   'Başlık',
-                  style: TextStyle(color: Colors.white),
                 )),
           )
         ],
