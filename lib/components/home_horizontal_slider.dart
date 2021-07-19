@@ -3,7 +3,7 @@ import 'package:spotify_clone/components/home_page_card.dart';
 import 'package:spotify_clone/consts.dart';
 
 class HomeHorizontalSlider extends StatelessWidget {
-  String title = '';
+  final String title;
   HomeHorizontalSlider(
     this.title, {
     Key? key,

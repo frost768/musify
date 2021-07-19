@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spotify_clone/controllers/PlayerController.dart';
+import 'package:spotify_clone/controllers/player_controller.dart';
 import 'package:spotify_clone/data/playlists.dart';
 import 'package:spotify_clone/views/player_full.dart';
 import 'package:spotify_clone/views/views.dart';
@@ -8,11 +8,11 @@ import 'package:spotify_clone/views/views.dart';
 class PlayerNarrow extends StatelessWidget {
   PlayerNarrow({Key? key}) : super(key: key);
 
-  TextStyle kSongNameStyle =
-      TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white);
-  TextStyle kArtistStyle =
+  final TextStyle kSongNameStyle =
+      TextStyle(fontSize: 13, fontWeight: FontWeight.bold);
+  final TextStyle kArtistStyle =
       TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.grey);
-  EdgeInsets _margin = const EdgeInsets.symmetric(horizontal: 20);
+  final EdgeInsets _margin = const EdgeInsets.symmetric(horizontal: 20);
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
@@ -38,7 +38,6 @@ class PlayerNarrow extends StatelessWidget {
                   children: [
                     Container(
                       width: kPlayerNarrowHeight,
-                      color: Colors.white,
                     ),
                     // Song Info
                     Expanded(
@@ -47,7 +46,8 @@ class PlayerNarrow extends StatelessWidget {
                         onPageChanged: (index) {
                           player.setTrack(index);
                         },
-                        children: rap
+                        children: playlists[0]
+                            .tracks
                             .map((e) => Container(
                                   margin: _margin,
                                   child: Column(
@@ -70,7 +70,7 @@ class PlayerNarrow extends StatelessWidget {
                                             ),
                                             Text(' '),
                                             Text(
-                                              player.track.artist,
+                                              player.track.artist.name,
                                               style: kArtistStyle,
                                             )
                                           ],
@@ -114,7 +114,6 @@ class PlayerNarrow extends StatelessWidget {
                     },
                     icon: Icon(
                       player.isPlaying ? Icons.pause : Icons.play_arrow,
-                      color: Colors.white,
                     ),
                   )
                 ],

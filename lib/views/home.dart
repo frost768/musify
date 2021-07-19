@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:spotify_clone/components/home_horizontal_slider.dart';
 import 'package:spotify_clone/consts.dart';
+import 'package:spotify_clone/controllers/user_controller.dart';
+import 'package:spotify_clone/data/playlists.dart';
 
-TextStyle kTableTitle =
-    TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15);
+TextStyle kTableTitle = TextStyle(fontWeight: FontWeight.bold, fontSize: 15);
 
 class HomeView extends StatelessWidget {
   HomeView({Key? key}) : super(key: key);
-  var boxDecoration = BoxDecoration(
+  final boxDecoration = BoxDecoration(
       gradient: RadialGradient(
           center: Alignment.topLeft,
           stops: [0, 1],
@@ -44,7 +46,6 @@ class SettingsBar extends StatelessWidget {
         children: [
           Icon(
             Icons.settings,
-            color: Colors.white,
           )
         ],
       ),
@@ -59,88 +60,46 @@ class HomePlaylistSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 250,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-                flex: 1,
-                child: Text(
-                  'Günaydın',
-                  style: kHeadingTitle,
-                )),
-            Expanded(
-              flex: 6,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: List.generate(
-                        3,
-                        (index) => Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 50,
-                                  decoration: BoxDecoration(
+    return GetBuilder(
+      init: UserController(),
+      builder: (UserController user) => Container(
+          height: 250,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  flex: 1,
+                  child: Text(
+                    'Günaydın',
+                    style: kHeadingTitle,
+                  )),
+              Expanded(
+                  flex: 6,
+                  child: Wrap(
+                    children: playlists
+                        .map((e) => Container(
+                              margin: const EdgeInsets.all(10),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 50,
+                                    height: 50,
                                     color: Colors.white,
                                   ),
-                                ),
-                                Container(
-                                  margin: kMarginLeft10,
-                                  child: Text(
-                                    'Başlık',
-                                    style: kTableTitle,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: List.generate(
-                        3,
-                        (index) => Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Container(
+                                  Container(
                                     margin: kMarginLeft10,
                                     child: Text(
-                                      'Başlık',
+                                      e.name,
                                       style: kTableTitle,
                                     ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ));
+                                  )
+                                ],
+                              ),
+                            ))
+                        .toList(),
+                  ))
+            ],
+          )),
+    );
   }
 }
