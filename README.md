@@ -1,16 +1,28 @@
 # spotify_clone
+  ## Screens
+    ✅ Player screen
+      🔲 Album art swipe
+    ✅ Bottom player
+     ✅ Swipe : May use Dismissable instead of PageView. Index must be synced.
+    🔲 Home
+    🔲 Search
+    🔲 Library
+    🔲 Tracklist
+    🔲 Artist page
+    🔲 Album page
+    🔲 Settings
+  
+  ## Functionality
+    ✅ Like tracks
+    ✅ Create playlist
+    🔲 Follow artists
+    - Player
+      ✅ Auto next song
+      ✅ Buffering
+      🔲 Repeat
+      🔲 Shuffle
+      
+    - Considering
+      🔲 Spotify API support for data
+    
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
