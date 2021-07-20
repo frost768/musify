@@ -5,11 +5,13 @@ import 'package:spotify_clone/controllers/user_controller.dart';
 import 'package:spotify_clone/core/app.dart';
 import 'package:spotify_clone/data/albums.dart';
 import 'package:spotify_clone/data/artists.dart';
+import 'package:spotify_clone/data/playlists.dart';
 
 void main() {
-  Get.put(UserController());
-  Get.put(PlayerController());
   initTracks();
   initAlbums();
+  initPlaylist();
+  Get.put(UserController());
+  Get.put(PlayerController());
   runApp(SpotifyClone());
 }

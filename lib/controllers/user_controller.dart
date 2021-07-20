@@ -33,7 +33,8 @@ class UserController extends GetxController {
       name = createPlaylistName;
     }
 
-    Playlist playlist = Playlist(1, name, tracks: tracks, createdBy: user);
+    Playlist playlist = Playlist(1, name, createdBy: user);
+    playlist.tracks = tracks;
     user.playlists.add(playlist);
     update();
   }

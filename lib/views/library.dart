@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:spotify_clone/components/albumlist_tile.dart';
 import 'package:spotify_clone/components/playlist_tile.dart';
 import 'package:spotify_clone/controllers/user_controller.dart';
+import 'package:spotify_clone/core/app.dart';
 import 'package:spotify_clone/data/artists.dart';
 import 'package:spotify_clone/views/views.dart';
 
@@ -78,7 +79,7 @@ class LibraryView extends StatelessWidget {
                             libraryListTileLikedSongs,
                             isFavoriteList: true,
                             subtitle: '${user.favorites.length} şarkı',
-                            onTap: () => Get.toNamed('FavoriteSongs'),
+                            onTap: () => onPageChange(4),
                           ),
                           ...user.playlists
                               .map((p) => PlaylistTile(p.name,

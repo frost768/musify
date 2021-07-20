@@ -4,14 +4,18 @@ import 'package:spotify_clone/components/bottom_nav_bar.dart';
 import 'package:spotify_clone/core/routes.dart';
 import 'package:spotify_clone/views/views.dart';
 
-final List<Widget> _pages = [HomeView(), SearchView(), LibraryView()];
+final List<Widget> _pages = [
+  HomeView(),
+  SearchView(),
+  LibraryView(),
+  LikedSongs()
+];
+final PageController pageController = PageController();
+void onPageChange(int index) {
+  pageController.jumpToPage(index);
+}
 
 class SpotifyClone extends StatelessWidget {
-  final PageController _pageController = PageController();
-  void onPageChange(int index) {
-    _pageController.jumpToPage(index);
-  }
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -23,11 +27,11 @@ class SpotifyClone extends StatelessWidget {
         backgroundColor: kMainBackColor,
         body: PageView(
           children: _pages,
-          controller: _pageController,
+          controller: pageController,
           onPageChanged: onPageChange,
           physics: NeverScrollableScrollPhysics(),
         ),
-        bottomNavigationBar: BottomNavBar(onPageChange),
+        bottomNavigationBar: BottomNavBar(),
       ),
     );
   }

@@ -46,5 +46,8 @@ const String searchBarPlaceholder = "Sanatçılar, şarkılar veya podcast'ler";
 // Player Narrow
 const String playerNarrowAvaiableDevices = 'Kullanılabilir Cihazlar';
 
+// Liked Songs
+const likedSongsTitle = 'Beğenilen Şarkılar';
+
 // Other
 const String kPlaylistGenericName = 'Çalma listem No.';
