@@ -26,11 +26,7 @@ class PlayerNarrow extends StatelessWidget {
               flex: 2,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) {
-                      return PlayerFull();
-                    },
-                  ));
+                  Get.toNamed('PlayerFull');
                 },
                 child: Row(
                   children: [
@@ -76,13 +72,11 @@ class PlayerNarrow extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Offstage(
-                                          child: Text(
-                                            playerNarrowAvaiableDevices,
-                                            style: kSongNameStyle,
-                                          ),
+                                      Offstage(
+                                        offstage: true,
+                                        child: Text(
+                                          playerNarrowAvaiableDevices,
+                                          style: kSongNameStyle,
                                         ),
                                       )
                                     ],

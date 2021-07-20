@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_clone/views/views.dart';
 
-class AlbumListTile extends StatelessWidget {
+class ArtistListTile extends StatelessWidget {
   final String name;
-  AlbumListTile(this.name, {Key? key}) : super(key: key);
+  ArtistListTile(this.name, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -22,11 +22,12 @@ class HomeHorizontalSlider extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            height: 50,
-            child: header,
-          ),
+          if (header != null)
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              height: 50,
+              child: header,
+            ),
           Container(
             height: 180,
             child: ListView.separated(

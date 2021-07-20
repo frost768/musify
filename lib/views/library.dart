@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spotify_clone/components/albumlist_tile.dart';
+import 'package:spotify_clone/components/artistlist_tile.dart';
 import 'package:spotify_clone/components/playlist_tile.dart';
 import 'package:spotify_clone/controllers/user_controller.dart';
 import 'package:spotify_clone/core/app.dart';
+import 'package:spotify_clone/data/albums.dart';
 import 'package:spotify_clone/data/artists.dart';
 import 'package:spotify_clone/views/views.dart';
 
@@ -88,11 +89,17 @@ class LibraryView extends StatelessWidget {
                         ]),
                         ListView(
                             children: artists
-                                .map((e) => AlbumListTile(e.name))
+                                .map((e) => ArtistListTile(e.name))
                                 .toList()),
                         ListView(
-                          children: user.favoriteAlbums
-                              .map((e) => PlaylistTile(e.name))
+                          children: albums
+                              .map((e) => PlaylistTile(
+                                    e.name,
+                                    subtitle: e.artist.name,
+                                    onTap: () {
+                                      Get.toNamed('AlbumView', arguments: e);
+                                    },
+                                  ))
                               .toList(),
                         ),
                       ]),

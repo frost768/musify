@@ -3,7 +3,7 @@ import 'package:spotify_clone/core/consts.dart';
 import 'package:spotify_clone/models/artist.dart';
 
 class ArtistCircleCard extends StatelessWidget {
-  Artist artist;
+  final Artist artist;
   bool? showName;
   ArtistCircleCard(this.artist, {Key? key, this.showName = true})
       : super(key: key);
