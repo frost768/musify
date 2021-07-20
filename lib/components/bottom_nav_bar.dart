@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_clone/components/player_narrow.dart';
+import 'package:spotify_clone/core/app.dart';
 import 'package:spotify_clone/views/views.dart';
 
 class BottomNavBar extends StatelessWidget {
-  Function(int) onPageChange;
-  BottomNavBar(this.onPageChange, {Key? key}) : super(key: key);
+  BottomNavBar({Key? key}) : super(key: key);
   get _icons => [
         IconButton(
             onPressed: () => onPageChange(0),
