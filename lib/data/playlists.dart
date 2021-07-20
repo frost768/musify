@@ -11,6 +11,6 @@ void initPlaylist() {
     Track(1, 'Believe', eminem.id, revival.id),
     Track(2, 'Without Me', eminem.id, eminemShow.id),
     Track(3, 'Stepdad', eminem.id, mtmb.id),
-    Track(4, 'Kamikaze', eminem.id, kamikaze.id),
+    Track(4, 'Kamikaze', eminem.id, kamikaze.id, isExplicit: true),
   ];
 }

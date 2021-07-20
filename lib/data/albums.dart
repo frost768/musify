@@ -1,8 +1,11 @@
 import 'package:spotify_clone/data/artists.dart';
+import 'package:spotify_clone/data/strings.dart';
 import 'package:spotify_clone/models/album.dart';
 import 'package:spotify_clone/models/track.dart';
 
-final kamikaze = Album(234, 'Kamikaze', artistId: eminem.id);
+final kamikaze = Album(234, 'Kamikaze',
+    artistId: eminem.id,
+    copyrightText: '$copyright $soundRecordCompany 2016 WEB Entertaiment');
 final noPressure = Album(42, 'No Pressure', artistId: logic.id);
 final eminemShow = Album(4232, 'The Eminem Show', artistId: eminem.id);
 final revival = Album(993, 'Revival', artistId: eminem.id);
@@ -18,6 +21,8 @@ void initTracks() {
   ];
   eminemShow.tracks = [Track(2, 'Without Me', eminem.id, eminemShow.id)];
   revival.tracks = [Track(1, 'Believe', eminem.id, revival.id)];
-  kamikaze.tracks = [Track(4, 'Kamikaze', eminem.id, kamikaze.id)];
+  kamikaze.tracks = [
+    Track(4, 'Kamikaze', eminem.id, kamikaze.id, isExplicit: true)
+  ];
   mtmb.tracks = [Track(3, 'Stepdad', eminem.id, mtmb.id)];
 }
