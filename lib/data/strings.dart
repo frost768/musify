@@ -49,5 +49,12 @@ const String playerNarrowAvaiableDevices = 'Kullanılabilir Cihazlar';
 // Liked Songs
 const likedSongsTitle = 'Beğenilen Şarkılar';
 
+// Album View
+const String albumViewYouMayAlsoLikeThese = 'Şunlardan da hoşlanabilirsin';
 // Other
+const String playShuffle = 'KARIŞIK ÇAL';
 const String kPlaylistGenericName = 'Çalma listem No.';
+const String copyright = '©';
+const String soundRecordCompany = '℗';
+const String registeredSign = '®';
+const String trademark = '™';

@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spotify_clone/components/play_shuffle_button.dart';
 import 'package:spotify_clone/views/views.dart';
 
 class LikedSongsSliver extends SliverPersistentHeaderDelegate {
+  final boxDecoration = BoxDecoration(
+      gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.purple, kMainBackColor]));
+  TextStyle titleStyle(size, shrinkOffset) => TextStyle(
+      fontSize: size,
+      fontWeight: FontWeight.bold,
+      color: Colors.white.withOpacity(opacityRatio(shrinkOffset)));
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Colors.purple, kMainBackColor])),
+      decoration: boxDecoration,
       child: SafeArea(
         child: Column(
           children: [
@@ -23,52 +29,34 @@ class LikedSongsSliver extends SliverPersistentHeaderDelegate {
                   IconButton(
                       onPressed: () => Get.back(),
                       icon: Icon(Icons.arrow_back)),
-                  Text(likedSongsTitle,
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white
-                              .withOpacity(((shrinkOffset) / maxExtent)))),
+                  Text(likedSongsTitle, style: titleStyle(15, shrinkOffset)),
                   IconButton(
                       onPressed: () => Get.back(), icon: Icon(Icons.more_vert)),
                 ],
               ),
             ),
             Container(
-              height: shrinkOffset <= 220 ? 220 - shrinkOffset : 0,
+              height: titleHeight(shrinkOffset),
               child: Opacity(
-                opacity: 1 - ((shrinkOffset) / maxExtent),
+                opacity: opacity(shrinkOffset),
                 child: Center(
                     child: Text(likedSongsTitle,
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white.withOpacity(
-                                1 - ((shrinkOffset) / maxExtent))))),
+                        style: titleStyle(30, shrinkOffset))),
               ),
             ),
-            Container(
-              width: 200,
-              // height: 50,
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-              decoration: BoxDecoration(
-                  color: Colors.green.shade800,
-                  borderRadius:
-                      BorderRadiusDirectional.all(Radius.circular(30))),
-              child: Center(
-                  child: Text(
-                'KARIŞIK ÇAL',
-                style: TextStyle(
-                    letterSpacing: 1,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              )),
-            )
+            PlayShuffleButton()
           ],
         ),
       ),
     );
   }
+
+  double titleHeight(double shrinkOffset) =>
+      shrinkOffset <= 220 ? 220 - shrinkOffset : 0;
+
+  double opacityRatio(double shrinkOffset) => ((shrinkOffset) / maxExtent);
+
+  double opacity(double shrinkOffset) => 1 - opacityRatio(shrinkOffset);
 
   @override
   double get maxExtent => 354.0;
