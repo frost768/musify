@@ -9,7 +9,8 @@ const kMarginLeft10 = EdgeInsets.only(left: 10);
 const kMarginTop10 = EdgeInsets.only(top: 10);
 const TextStyle kHeadingTitle =
     TextStyle(fontWeight: FontWeight.bold, fontSize: 25);
-
+const TextStyle kTableTitle =
+    TextStyle(fontWeight: FontWeight.bold, fontSize: 15);
 const TextStyle kLibraryTabStyle =
     TextStyle(fontWeight: FontWeight.bold, fontSize: 14);
 const TextStyle kLibraryHeaderTabStyle =

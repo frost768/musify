@@ -1,4 +1,7 @@
 import 'package:get/get.dart';
+import 'package:spotify_clone/data/strings.dart';
+import 'package:spotify_clone/models/album.dart';
+import 'package:spotify_clone/models/artist.dart';
 import 'package:spotify_clone/models/playlist.dart';
 import 'package:spotify_clone/models/track.dart';
 import 'package:spotify_clone/models/user.dart';
@@ -8,10 +11,13 @@ class UserController extends GetxController {
   String createPlaylistName = '';
   List<Playlist> get playlists => user.playlists;
   List<Track> get favorites => user.favorites;
+  List<Artist> get favoriteArtists => user.favoriteArtists;
+  List<Album> get favoriteAlbums => user.favoriteAlbums;
   void addToFavorites(Track track) {
     bool inList = user.favorites.contains(track);
     if (!inList) {
       user.favorites.add(track);
+      update();
     }
   }
 
@@ -22,7 +28,7 @@ class UserController extends GetxController {
 
   void createPlaylist({String? name, List<Track> tracks = const []}) {
     if (createPlaylistName.isEmpty)
-      name = 'Çalma listem No.${user.playlists.length + 1}';
+      name = '$kPlaylistGenericName ${user.playlists.length + 1}';
     else {
       name = createPlaylistName;
     }
