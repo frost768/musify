@@ -9,7 +9,7 @@
     🔲 Library
     🔲 Tracklist
     🔲 Artist page
-    🔲 Album page
+    ✅ Album page
     🔲 Settings
   
   ## Functionality
