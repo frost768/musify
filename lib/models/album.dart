@@ -5,6 +5,7 @@ import 'package:spotify_clone/models/track.dart';
 
 class Album extends BaseModel {
   String albumArtUrl;
+  String copyrightText;
   int artistId;
   bool isFavorite = false;
   Duration get duration => tracks.map((e) => e.duration).reduce((prev, curr) =>
@@ -13,6 +14,9 @@ class Album extends BaseModel {
   List<Track> tracks;
 
   Album(int id, String name,
-      {this.artistId = 0, this.tracks = const [], this.albumArtUrl = ''})
+      {this.artistId = 0,
+      this.tracks = const [],
+      this.albumArtUrl = '',
+      this.copyrightText = ''})
       : super(id: id, name: name);
 }

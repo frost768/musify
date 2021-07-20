@@ -5,17 +5,15 @@ import 'package:spotify_clone/models/user.dart';
 class Playlist extends BaseModel {
   bool following;
   User? createdBy;
-  DateTime? createdAt;
   List<Track> tracks;
   Duration get totalDuration => tracks.map((t) => t.duration).reduce((value,
           element) =>
       Duration(milliseconds: value.inMilliseconds + element.inMilliseconds));
-  Playlist(int id, String name,
-      {this.following = false,
-      this.tracks = const [],
-      this.createdBy,
-      this.createdAt})
-      : super(id: id, name: name) {
-    this.createdAt = DateTime.now();
-  }
+  Playlist(
+    int id,
+    String name, {
+    this.following = false,
+    this.tracks = const [],
+    this.createdBy,
+  }) : super(id: id, name: name);
 }

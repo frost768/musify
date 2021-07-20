@@ -13,6 +13,33 @@ class UserController extends GetxController {
   List<Track> get favorites => user.favorites;
   List<Artist> get favoriteArtists => user.favoriteArtists;
   List<Album> get favoriteAlbums => user.favoriteAlbums;
+  void addToFavoriteArtists(Artist artist) {
+    bool inList = user.favoriteAlbums.contains(artist);
+    if (!inList) {
+      user.favoriteArtists.add(artist);
+      update();
+    }
+  }
+
+  void removeFromArtistFavorites(int artistId) {
+    user.favoriteArtists.removeWhere((element) => element.id == artistId);
+    update();
+  }
+
+  void addToFavoriteAlbums(Album album) {
+    album.isFavorite = true;
+    bool inList = user.favoriteAlbums.contains(album);
+    if (!inList) {
+      user.favoriteAlbums.add(album);
+      update();
+    }
+  }
+
+  void removeFromAlbumFavorites(int albumId) {
+    user.favoriteAlbums.removeWhere((element) => element.id == albumId);
+    update();
+  }
+
   void addToFavorites(Track track) {
     bool inList = user.favorites.contains(track);
     if (!inList) {

@@ -7,6 +7,7 @@ import 'package:spotify_clone/models/base_model.dart';
 class Track extends BaseModel {
   int albumId;
   int artistId;
+  bool isExplicit;
   Album get album => albums.firstWhere((album) => album.id == albumId);
   Artist get artist => artists.firstWhere((artist) => artist.id == artistId);
   Duration duration;
@@ -14,6 +15,7 @@ class Track extends BaseModel {
 
   Track(int id, String name, this.artistId, this.albumId,
       {this.liked = false,
+      this.isExplicit = false,
       this.duration = const Duration(minutes: 2, seconds: 20)})
       : super(id: id, name: name);
 }
