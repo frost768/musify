@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+export 'extensions.dart';
 
-const kMainColor = Color(0xff202020);
+const kMainColor = Color(0xff292929);
 const kPlayerNarrowHeight = 70.0;
 const kBottomSideItemHeight = 60.0;
 const kBottomSideTotalHeight = 132.0;
