@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_clone/components/searchbar_placeholder.dart';
-import 'package:spotify_clone/consts.dart';
+import 'package:spotify_clone/views/views.dart';
 
 class SearchView extends StatelessWidget {
   SearchView({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class SearchView extends StatelessWidget {
               flexibleSpace: Center(
                 child: Container(
                   height: 100,
-                  child: Text('Ara'),
+                  child: Text(searchViewSliverSearch),
                 ),
               ),
             ),
@@ -35,7 +35,7 @@ class SearchView extends StatelessWidget {
                       height: 50,
                       child: Center(
                         child: Text(
-                          'Hepsine göz at',
+                          searchViewCheckOutAll,
                           style: kHeadingTitle.copyWith(fontSize: 16),
                         ),
                       ),

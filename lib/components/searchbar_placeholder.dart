@@ -15,7 +15,7 @@ class SearchBarPlaceholder extends StatelessWidget {
         children: [
           Icon(Icons.search),
           Text(
-            "Sanatçılar, şarkılar veya podcast'ler",
+            searchBarPlaceholder,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           )
         ],

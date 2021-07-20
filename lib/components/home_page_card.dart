@@ -1,27 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:spotify_clone/consts.dart';
+import 'package:spotify_clone/core/consts.dart';
+import 'package:spotify_clone/models/album.dart';
+import 'package:spotify_clone/views/views.dart';
 
 class HomePageCard extends StatelessWidget {
-  const HomePageCard({Key? key}) : super(key: key);
+  Album? album;
+  bool showTitle;
+  bool showSubtitle;
+  HomePageCard(
+      {this.album, this.showTitle = false, this.showSubtitle = true, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: kMarginLeft10,
-      width: 150,
-      decoration:
-          BoxDecoration(color: Colors.transparent, shape: BoxShape.rectangle),
+    return FittedBox(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(flex: 4, child: Placeholder()),
-          Expanded(
-            child: Container(
-                margin: kMarginTop10,
-                child: Text(
-                  'Başlık',
-                )),
-          )
+          Container(
+            width: 150,
+            height: 150,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [Colors.purple, Colors.pink])),
+          ),
+          Container(
+              width: 150,
+              margin: kMarginTop10,
+              height: 40,
+              child: Column(
+                children: [
+                  if (album != null)
+                    Text(
+                      album!.name,
+                    ),
+                  if (showTitle)
+                    Text(
+                      homePageCardSampleTitle,
+                    ),
+                  if (showSubtitle)
+                    Text(
+                      homePageCardSampleSubtitle,
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                ],
+              ))
         ],
       ),
     );

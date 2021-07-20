@@ -3,4 +3,5 @@ export 'home.dart';
 export 'library.dart';
 export 'player_full.dart';
 export 'search.dart';
-export '../consts.dart';
+export '../core/consts.dart';
+export '../data/strings.dart';

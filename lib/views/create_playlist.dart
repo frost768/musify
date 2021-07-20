@@ -30,7 +30,7 @@ class CreatePlaylist extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Çalma listene bir isim ver.',
+                    createPlaylistTitle,
                     style: kCreatePlayListTitleStyle,
                   ),
                   Container(
@@ -62,7 +62,7 @@ class CreatePlaylist extends StatelessWidget {
                         child: Container(
                             width: 100,
                             child: Text(
-                              'İPTAL',
+                              createPlaylistCancel,
                               style: kCreatePlayListButtonCancelTextStyle,
                             )),
                       ),
@@ -75,8 +75,8 @@ class CreatePlaylist extends StatelessWidget {
                             width: 100,
                             child: Text(
                               user.createPlaylistName.isEmpty
-                                  ? 'ATLA'
-                                  : 'OLUŞTUR',
+                                  ? createPlaylistSkip
+                                  : createPlaylistCreate,
                               style: kCreatePlayListButtonCreateTextStyle,
                             )),
                       ),

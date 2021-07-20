@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotify_clone/controllers/player_controller.dart';
 import 'package:spotify_clone/data/playlists.dart';
-import 'package:spotify_clone/views/player_full.dart';
 import 'package:spotify_clone/views/views.dart';
 
 class PlayerNarrow extends StatelessWidget {
@@ -38,6 +37,7 @@ class PlayerNarrow extends StatelessWidget {
                     // Album Art
                     Container(
                       width: kPlayerNarrowHeight,
+                      color: Colors.white,
                     ),
                     // Song Info
                     Expanded(
@@ -55,7 +55,7 @@ class PlayerNarrow extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
-                                        flex: 3,
+                                        flex: 2,
                                         child: Row(
                                           children: [
                                             Text(
@@ -76,10 +76,13 @@ class PlayerNarrow extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                      Offstage(
-                                        child: Text(
-                                          'Kullanılabilir Cihazlar',
-                                          style: kSongNameStyle,
+                                      Expanded(
+                                        flex: 1,
+                                        child: Offstage(
+                                          child: Text(
+                                            playerNarrowAvaiableDevices,
+                                            style: kSongNameStyle,
+                                          ),
                                         ),
                                       )
                                     ],

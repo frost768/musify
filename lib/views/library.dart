@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:spotify_clone/components/albumlist_tile.dart';
 import 'package:spotify_clone/components/playlist_tile.dart';
 import 'package:spotify_clone/controllers/user_controller.dart';
-import 'package:spotify_clone/data/albums.dart';
 import 'package:spotify_clone/data/artists.dart';
 import 'package:spotify_clone/views/views.dart';
 
@@ -23,14 +22,14 @@ class LibraryView extends StatelessWidget {
                   title: Row(
                     children: [
                       Text(
-                        'Müzik',
+                        libraryHeaderMusic,
                         style: kLibraryHeaderTabStyle,
                       ),
                       SizedBox(
                         width: 15,
                       ),
                       Text(
-                        "Podcast'ler",
+                        libraryHeaderPodcasts,
                         style: kLibraryHeaderTabStyle,
                       )
                     ],
@@ -49,19 +48,19 @@ class LibraryView extends StatelessWidget {
                       child: TabBar(indicatorColor: Colors.green, tabs: [
                         Tab(
                           child: Text(
-                            'Çalma Listeleri',
+                            libraryTabPlaylists,
                             style: kLibraryTabStyle,
                           ),
                         ),
                         Tab(
                           child: Text(
-                            'Sanatçılar',
+                            libraryTabArtists,
                             style: kLibraryTabStyle,
                           ),
                         ),
                         Tab(
                           child: Text(
-                            'Albümler',
+                            libraryTabAlbums,
                             style: kLibraryTabStyle,
                           ),
                         )
@@ -71,15 +70,15 @@ class LibraryView extends StatelessWidget {
                       child: TabBarView(children: [
                         ListView(children: [
                           PlaylistTile(
-                            'Çalma listesi oluştur',
+                            libraryListTileCreatePlaylist,
                             isCreatePlaylist: true,
                             onTap: () => Get.toNamed('CreatePlaylist'),
                           ),
                           PlaylistTile(
-                            'Beğenilen Şarkılar',
+                            libraryListTileLikedSongs,
                             isFavoriteList: true,
                             subtitle: '${user.favorites.length} şarkı',
-                            onTap: () => Get.toNamed('CreatePlaylistPage'),
+                            onTap: () => Get.toNamed('FavoriteSongs'),
                           ),
                           ...user.playlists
                               .map((p) => PlaylistTile(p.name,
@@ -91,8 +90,9 @@ class LibraryView extends StatelessWidget {
                                 .map((e) => AlbumListTile(e.name))
                                 .toList()),
                         ListView(
-                          children:
-                              albums.map((e) => PlaylistTile(e.name)).toList(),
+                          children: user.favoriteAlbums
+                              .map((e) => PlaylistTile(e.name))
+                              .toList(),
                         ),
                       ]),
                     ),
