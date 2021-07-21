@@ -19,103 +19,125 @@ class PlayerNarrow extends StatelessWidget {
       builder: (PlayerController player) => Container(
         height: kPlayerNarrowHeight,
         color: kMainColor,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+        child: Column(
           children: [
-            Expanded(
-              flex: 2,
-              child: GestureDetector(
-                onTap: () {
-                  Get.toNamed('PlayerFull');
-                },
-                child: Row(
-                  children: [
-                    // Album Art
-                    Container(
-                      width: kPlayerNarrowHeight,
-                      color: Colors.white,
-                    ),
-                    // Song Info
-                    Expanded(
-                      flex: 2,
-                      child: PageView(
-                        onPageChanged: (index) {
-                          player.setTrack(index);
-                        },
-                        children: playlists[0]
-                            .tracks
-                            .map((e) => Container(
-                                  margin: _margin,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Row(
+            Row(
+              children: [
+                Obx(
+                  () => Container(
+                    height: kPlayerElapsedTimeNarrowHeight,
+                    width: player.time.value *
+                        (Get.size.width / player.track.duration.inSeconds),
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [Colors.purple, Colors.pink])),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              height: kPlayerNarrowHeight - kPlayerElapsedTimeNarrowHeight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.toNamed('PlayerFull');
+                      },
+                      child: Row(
+                        children: [
+                          // Album Art
+                          Container(
+                            width: kPlayerNarrowHeight,
+                            color: Colors.white,
+                          ),
+                          // Song Info
+                          Expanded(
+                            flex: 2,
+                            child: PageView(
+                              onPageChanged: (index) {
+                                player.setTrack(index);
+                              },
+                              children: playlists[0]
+                                  .tracks
+                                  .map((e) => Container(
+                                        margin: _margin,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              player.track.name,
-                                              style: kSongNameStyle,
+                                            Expanded(
+                                              flex: 2,
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    player.track.name,
+                                                    style: kSongNameStyle,
+                                                  ),
+                                                  Text(' '),
+                                                  Text(
+                                                    '•',
+                                                    style: kArtistStyle
+                                                        .copyWith(fontSize: 15),
+                                                  ),
+                                                  Text(' '),
+                                                  Text(
+                                                    player.track.artist.name,
+                                                    style: kArtistStyle,
+                                                  )
+                                                ],
+                                              ),
                                             ),
-                                            Text(' '),
-                                            Text(
-                                              '•',
-                                              style: kArtistStyle.copyWith(
-                                                  fontSize: 15),
-                                            ),
-                                            Text(' '),
-                                            Text(
-                                              player.track.artist.name,
-                                              style: kArtistStyle,
+                                            Offstage(
+                                              offstage: true,
+                                              child: Text(
+                                                playerNarrowAvaiableDevices,
+                                                style: kSongNameStyle,
+                                              ),
                                             )
                                           ],
                                         ),
-                                      ),
-                                      Offstage(
-                                        offstage: true,
-                                        child: Text(
-                                          playerNarrowAvaiableDevices,
-                                          style: kSongNameStyle,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ))
-                            .toList(),
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            // Like And Play
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      player.toggleLike();
-                    },
-                    icon: Icon(
-                        player.track.liked
-                            ? Icons.favorite
-                            : Icons.favorite_outline,
-                        color:
-                            player.track.liked ? Colors.green : Colors.white),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      player.togglePlay();
-                    },
-                    icon: Icon(
-                      player.isPlaying ? Icons.pause : Icons.play_arrow,
+                  // Like And Play
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            player.toggleLike();
+                          },
+                          icon: Icon(
+                              player.track.liked
+                                  ? Icons.favorite
+                                  : Icons.favorite_outline,
+                              color: player.track.liked
+                                  ? Colors.green
+                                  : Colors.white),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            player.togglePlay();
+                          },
+                          icon: Icon(
+                            player.isPlaying ? Icons.pause : Icons.play_arrow,
+                          ),
+                        )
+                      ],
                     ),
                   )
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

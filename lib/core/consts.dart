@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 export 'extensions.dart';
 
 const kMainColor = Color(0xff292929);
-const kPlayerNarrowHeight = 70.0;
+const kPlayerNarrowHeight = 72.0;
+const kPlayerElapsedTimeNarrowHeight = 2.0;
 const kBottomSideItemHeight = 60.0;
-const kBottomSideTotalHeight = 132.0;
+const kBottomSideTotalHeight = 134.0;
 const kMainBackColor = Color(0xff171717);
 const kMarginLeft10 = EdgeInsets.only(left: 10);
 const kMarginTop10 = EdgeInsets.only(top: 10);
