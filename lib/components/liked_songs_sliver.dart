@@ -9,10 +9,14 @@ class LikedSongsSliver extends SliverPersistentHeaderDelegate {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [Colors.purple, kMainBackColor]));
-  TextStyle titleStyle(size, shrinkOffset) => TextStyle(
+  TextStyle barTitleStyle(double size, shrinkOffset) => TextStyle(
       fontSize: size,
       fontWeight: FontWeight.bold,
       color: Colors.white.withOpacity(opacityRatio(shrinkOffset)));
+  TextStyle titleStyle(double size, shrinkOffset) => TextStyle(
+      fontSize: size,
+      fontWeight: FontWeight.bold,
+      color: Colors.white.withOpacity(opacity(shrinkOffset)));
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -29,7 +33,7 @@ class LikedSongsSliver extends SliverPersistentHeaderDelegate {
                   IconButton(
                       onPressed: () => Get.back(),
                       icon: Icon(Icons.arrow_back)),
-                  Text(likedSongsTitle, style: titleStyle(15, shrinkOffset)),
+                  Text(likedSongsTitle, style: barTitleStyle(15, shrinkOffset)),
                   IconButton(
                       onPressed: () => Get.back(), icon: Icon(Icons.more_vert)),
                 ],
@@ -56,7 +60,7 @@ class LikedSongsSliver extends SliverPersistentHeaderDelegate {
 
   double opacityRatio(double shrinkOffset) => ((shrinkOffset) / maxExtent);
 
-  double opacity(double shrinkOffset) => 1 - opacityRatio(shrinkOffset);
+  double opacity(double shrinkOffset) => 1 - ((shrinkOffset) / maxExtent);
 
   @override
   double get maxExtent => 354.0;
