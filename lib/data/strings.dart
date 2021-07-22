@@ -1,7 +1,6 @@
 // Home Page
 String get homeGreetingTitle {
   int now = DateTime.now().hour;
-  print(now);
   bool isMorning = now >= 8 && now <= 12;
   bool isNoon = now >= 12 && now <= 18;
   if (isMorning)
@@ -40,7 +39,8 @@ const String libraryListTileLikedSongs = 'Beğenilen Şarkılar';
 
 // Search
 const String searchViewSliverSearch = 'Ara';
-const String searchViewCheckOutAll = 'Hepsine göz at';
+const String searchViewYourTopGenres = 'En çok dinlediğin türler';
+const String searchViewBrowseAll = 'Hepsine göz at';
 const String searchBarPlaceholder = "Sanatçılar, şarkılar veya podcast'ler";
 
 // Player Narrow
