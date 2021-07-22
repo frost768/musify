@@ -1,11 +1,11 @@
 # spotify_clone
   ## Screens
     ✅ Player screen
-      🔲 Album art swipe
+      ✅ Album art swipe
     ✅ Bottom player
      ✅ Swipe : May use Dismissable instead of PageView. Index must be synced.
     🔲 Home
-    🔲 Search
+    ✅ Search
     🔲 Library
     🔲 Tracklist
     🔲 Artist page
@@ -19,8 +19,8 @@
     - Player
       ✅ Auto next song
       ✅ Buffering
-      🔲 Repeat
-      🔲 Shuffle
+      ✅ Repeat
+      ✅ Shuffle
       
     - Considering
       🔲 Spotify API support for data
