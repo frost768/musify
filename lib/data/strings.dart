@@ -2,7 +2,7 @@
 String get homeGreetingTitle {
   int now = DateTime.now().hour;
   bool isMorning = now >= 8 && now <= 12;
-  bool isNoon = now >= 12 && now <= 18;
+  bool isNoon = now >= 12 && now < 18;
   if (isMorning)
     return 'Günaydın';
   else if (isNoon)

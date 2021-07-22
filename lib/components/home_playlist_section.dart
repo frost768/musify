@@ -6,17 +6,17 @@ import 'package:spotify_clone/data/playlists.dart';
 import 'package:spotify_clone/views/views.dart';
 
 class HomePlaylistSection extends StatelessWidget {
-  final boxDecoration = BoxDecoration(
+  final backgroundGradient = BoxDecoration(
       gradient: RadialGradient(
     center: Alignment.topLeft,
-    stops: [0, 0.1, 0.2, 1],
-    colors: [
-      Colors.amber.shade300,
-      Colors.amber.shade200,
-      Colors.amber.shade100,
-      kMainBackColor
-    ],
+    radius: 1.8,
+    stops: [0, 0.3],
+    colors: [Colors.white10, kMainBackColor],
   ));
+  final playlistAlbumArtLeading = BoxDecoration(
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+      color: Colors.white);
   HomePlaylistSection({
     Key? key,
   }) : super(key: key);
@@ -28,7 +28,7 @@ class HomePlaylistSection extends StatelessWidget {
       builder: (UserController user) => Container(
           height: 320,
           child: Container(
-            decoration: boxDecoration,
+            decoration: backgroundGradient,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -63,33 +63,22 @@ class HomePlaylistSection extends StatelessWidget {
                 Container(
                     height: 230,
                     child: GridView.count(
-                      childAspectRatio: 3 / 1,
-                      crossAxisCount: 2,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: playlists
-                          .map((e) => Container(
-                                margin: const EdgeInsets.all(10),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 50,
-                                      width: 50,
-                                      color: Colors.white,
-                                    ),
-                                    Container(
-                                      margin: kMarginLeft10,
-                                      width: 100,
-                                      child: Text(
-                                        e.name,
-                                        overflow: TextOverflow.fade,
-                                        style: kTableTitle,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ))
-                          .toList(),
-                    ))
+                        childAspectRatio: 3 / 1,
+                        crossAxisCount: 2,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: playlists
+                            .map((e) => ListTile(
+                                  leading: Container(
+                                    width: 60,
+                                    decoration: playlistAlbumArtLeading,
+                                  ),
+                                  title: Text(
+                                    e.name,
+                                    // overflow: TextOverflow.ellipsis,
+                                    style: kTableTitle,
+                                  ),
+                                ))
+                            .toList()))
               ],
             ),
           )),

@@ -22,17 +22,17 @@ class HomeRecommendations extends StatelessWidget {
             artist: eminem,
           )),
           HomeHorizontalSlider(
+              header: Text(
+            homeUniqueSelections,
+            style: kHeadingTitle,
+          )),
+          HomeHorizontalSlider(
               header: HomePageSliderCustomHeader(
             album: kamikaze,
           )),
           HomeHorizontalSlider(
               header: Text(
             homeRecentlyPlayed,
-            style: kHeadingTitle,
-          )),
-          HomeHorizontalSlider(
-              header: Text(
-            homeUniqueSelections,
             style: kHeadingTitle,
           )),
           HomeHorizontalSlider(
