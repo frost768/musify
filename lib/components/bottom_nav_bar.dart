@@ -3,24 +3,27 @@ import 'package:spotify_clone/components/player_narrow.dart';
 import 'package:spotify_clone/core/app.dart';
 import 'package:spotify_clone/views/views.dart';
 
-class BottomNavBar extends StatelessWidget {
+class BottomNavBar extends StatefulWidget {
   BottomNavBar({Key? key}) : super(key: key);
+
+  @override
+  _BottomNavBarState createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
+  int currentIndex = 0;
   get _icons => [
-        IconButton(
-            onPressed: () => onPageChange(0),
+        BottomNavigationBarItem(
+            label: 'Ana Sayfa',
             icon: Icon(
               Icons.home,
             )),
-        IconButton(
-            onPressed: () => onPageChange(1),
+        BottomNavigationBarItem(
+            label: 'Ara',
             icon: Icon(
               Icons.search,
             )),
-        IconButton(
-            onPressed: () => onPageChange(2),
-            icon: Icon(
-              Icons.library_music_outlined,
-            )),
+        BottomNavigationBarItem(label: 'Kitaplığın', icon: Icon(Icons.dehaze)),
       ];
 
   @override
@@ -35,15 +38,16 @@ class BottomNavBar extends StatelessWidget {
             height: 2,
             color: kMainBackColor,
           ),
-          BottomAppBar(
-            color: kMainColor,
-            child: SizedBox(
-              height: kBottomSideItemHeight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: _icons,
-              ),
-            ),
+          BottomNavigationBar(
+            onTap: (value) {
+              setState(() {
+                currentIndex = value;
+              });
+              onPageChange(value);
+            },
+            selectedItemColor: Colors.white,
+            currentIndex: currentIndex,
+            items: _icons,
           ),
         ],
       ),
