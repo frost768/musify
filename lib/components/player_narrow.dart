@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spotify_clone/components/player_scroller.dart';
 import 'package:spotify_clone/controllers/player_controller.dart';
-import 'package:spotify_clone/data/playlists.dart';
 import 'package:spotify_clone/views/views.dart';
 
 class PlayerNarrow extends StatelessWidget {
@@ -56,52 +56,43 @@ class PlayerNarrow extends StatelessWidget {
                           // Song Info
                           Expanded(
                             flex: 2,
-                            child: PageView(
-                              onPageChanged: (index) {
-                                player.setTrack(index);
-                              },
-                              children: playlists[0]
-                                  .tracks
-                                  .map((e) => Container(
-                                        margin: _margin,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    player.track.name,
-                                                    style: kSongNameStyle,
-                                                  ),
-                                                  Text(' '),
-                                                  Text(
-                                                    '•',
-                                                    style: kArtistStyle
-                                                        .copyWith(fontSize: 15),
-                                                  ),
-                                                  Text(' '),
-                                                  Text(
-                                                    player.track.artist.name,
-                                                    style: kArtistStyle,
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            Offstage(
-                                              offstage: true,
-                                              child: Text(
-                                                playerNarrowAvaiableDevices,
-                                                style: kSongNameStyle,
-                                              ),
-                                            )
-                                          ],
+                            child: PlayerScroller(Container(
+                              margin: _margin,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          player.track.name,
+                                          style: kSongNameStyle,
                                         ),
-                                      ))
-                                  .toList(),
-                            ),
+                                        Text(' '),
+                                        Text(
+                                          '•',
+                                          style: kArtistStyle.copyWith(
+                                              fontSize: 15),
+                                        ),
+                                        Text(' '),
+                                        Text(
+                                          player.track.artist.name,
+                                          style: kArtistStyle,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Offstage(
+                                    offstage: true,
+                                    child: Text(
+                                      playerNarrowAvaiableDevices,
+                                      style: kSongNameStyle,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )),
                           ),
                         ],
                       ),
