@@ -36,7 +36,7 @@ class LibraryView extends StatelessWidget {
                       )
                     ],
                   ),
-                  expandedHeight: 70,
+                  toolbarHeight: 40,
                 ),
               ];
             },
@@ -45,29 +45,26 @@ class LibraryView extends StatelessWidget {
                 margin: kMarginLeft10,
                 child: Column(
                   children: [
-                    Container(
-                      height: 50,
-                      child: TabBar(indicatorColor: Colors.green, tabs: [
-                        Tab(
-                          child: Text(
-                            libraryTabPlaylists,
-                            style: kLibraryTabStyle,
-                          ),
+                    TabBar(indicatorColor: Colors.green, tabs: [
+                      Tab(
+                        child: Text(
+                          libraryTabPlaylists,
+                          style: kLibraryTabStyle,
                         ),
-                        Tab(
-                          child: Text(
-                            libraryTabArtists,
-                            style: kLibraryTabStyle,
-                          ),
+                      ),
+                      Tab(
+                        child: Text(
+                          libraryTabArtists,
+                          style: kLibraryTabStyle,
                         ),
-                        Tab(
-                          child: Text(
-                            libraryTabAlbums,
-                            style: kLibraryTabStyle,
-                          ),
-                        )
-                      ]),
-                    ),
+                      ),
+                      Tab(
+                        child: Text(
+                          libraryTabAlbums,
+                          style: kLibraryTabStyle,
+                        ),
+                      )
+                    ]),
                     Expanded(
                       child: TabBarView(children: [
                         ListView(children: [

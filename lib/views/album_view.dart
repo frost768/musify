@@ -12,7 +12,7 @@ class AlbumView extends StatelessWidget {
   Album? album;
   AlbumView({this.album, Key? key}) : super(key: key);
   String get albumTrackAndDurationInfo =>
-      '${album!.tracks.length} şarkı • ${album!.duration.inMinutes} dk.  ${album!.duration.inSeconds} sn.';
+      '${album!.tracks.length} şarkı • ${album!.duration.inMinutes} dk.  ${album!.duration.inSeconds - album!.duration.inMinutes * 60} sn.';
   final albumNameStyle = TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
   final boxDecoration = BoxDecoration(
       gradient: LinearGradient(

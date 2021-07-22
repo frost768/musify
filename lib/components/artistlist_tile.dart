@@ -12,7 +12,7 @@ class ArtistListTile extends StatelessWidget {
       child: Row(
         children: [
           CircleAvatar(
-            radius: 30,
+            radius: 40,
             backgroundColor: Colors.white,
           ),
           SizedBox(
