@@ -19,7 +19,10 @@ class SpotifyClone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      theme: ThemeData(primaryColor: kMainColor, accentColor: Colors.green),
+      theme: ThemeData(
+          primaryColor: kMainColor,
+          colorScheme:
+              ColorScheme.fromSwatch().copyWith(secondary: Colors.green)),
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.dark,
       routes: routes,
