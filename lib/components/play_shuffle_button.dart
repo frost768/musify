@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spotify_clone/data/strings.dart';
+import 'package:spotify_clone/core/strings.dart';
 
 class PlayShuffleButton extends StatelessWidget {
   PlayShuffleButton({

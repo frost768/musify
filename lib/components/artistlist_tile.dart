@@ -1,29 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_clone/views/views.dart';
 
-class ArtistListTile extends StatelessWidget {
+class ArtistListTile extends ListTile {
   final String name;
-  ArtistListTile(this.name, {Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 40,
-            backgroundColor: Colors.white,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Text(
-            name,
-            style: kLibraryTabStyle,
-          ),
-        ],
-      ),
-    );
-  }
+  final String artistPicUrl;
+
+  ArtistListTile(this.name, this.artistPicUrl)
+      : super(
+            contentPadding: const EdgeInsets.all(10),
+            leading: CircleAvatar(
+              radius: 40,
+              backgroundImage: Image.network(artistPicUrl).image,
+            ),
+            title: Text(
+              name,
+              style: kLibraryTabStyle,
+            ),
+            trailing:
+                IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)));
 }

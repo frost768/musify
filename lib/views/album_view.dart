@@ -11,8 +11,8 @@ import 'package:spotify_clone/views/views.dart';
 class AlbumView extends StatelessWidget {
   Album? album;
   AlbumView({this.album, Key? key}) : super(key: key);
-  String get albumTrackAndDurationInfo =>
-      '${album!.tracks.length} şarkı • ${album!.duration.inMinutes} dk.  ${album!.duration.inSeconds - album!.duration.inMinutes * 60} sn.';
+  // String get albumTrackAndDurationInfo =>
+  //     '${album!.tracks.length} şarkı • ${album!.duration.inMinutes} dk.  ${album!.duration.inSeconds - album!.duration.inMinutes * 60} sn.';
   final albumNameStyle = TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
   final boxDecoration = BoxDecoration(
       gradient: LinearGradient(
@@ -39,11 +39,8 @@ class AlbumView extends StatelessWidget {
       init: AlbumController(album!),
       builder: (AlbumController albumController) {
         var _appBar = AppBar(
-            shadowColor: Colors.transparent,
-            backgroundColor: kMainColor,
-            foregroundColor: Colors.transparent,
             title: Text(
-              album!.name,
+              album!.title,
               style: albumNameStyle,
             ),
             centerTitle: true,
@@ -72,7 +69,7 @@ class AlbumView extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.all(10),
                 child: Text(
-                  album!.name,
+                  album!.title,
                   style: albumArtNameStyle,
                 ),
               ),
@@ -80,30 +77,31 @@ class AlbumView extends StatelessWidget {
                 margin: albumArtSubtitleMargin,
                 height: 20,
                 child: Text(
-                  'Albüm / ${album!.artist.name} • ${album!.createdAt!.year}',
+                  'd',
+                  // 'Albüm / ${album!.artist.name} • ${album!.createdAt!.year}',
                   style: albumArtSubtitleStyle,
                 ),
               ),
               PlayShuffleButton(),
-              ...album!.tracks.map((track) => TrackTile(track)).toList(),
-              ListTile(
-                title: Text(
-                  '${album!.createdAt!.ddMonthYYYY}',
-                ),
-                subtitle: Text(
-                  albumTrackAndDurationInfo,
-                  style: albumTrackAndDurationInfoStyle,
-                ),
-              ),
-              ListTile(
-                leading: CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Colors.white,
-                ),
-                title: Text(
-                  '${album!.artist.name}',
-                ),
-              ),
+              // ...album!.tracks.map((track) => TrackTile(track)).toList(),
+              // ListTile(
+              //   title: Text(
+              //     '${album!.createdAt!.ddMonthYYYY}',
+              //   ),
+              //   subtitle: Text(
+              //     albumTrackAndDurationInfo,
+              //     style: albumTrackAndDurationInfoStyle,
+              //   ),
+              // ),
+              // ListTile(
+              //   leading: CircleAvatar(
+              //     radius: 25,
+              //     backgroundColor: Colors.white,
+              //   ),
+              //   title: Text(
+              //     '${album!.artist.name}',
+              //   ),
+              // ),
               Container(
                 margin: const EdgeInsets.only(left: 10),
                 child: HomeHorizontalSlider(
@@ -114,16 +112,16 @@ class AlbumView extends StatelessWidget {
                   ),
                 )),
               ),
-              Row(
-                children: [
-                  Container(
-                      margin: copyrightTextMargin,
-                      child: Text(
-                        '${album!.copyrightText}',
-                        style: copyrightTextStyle,
-                      )),
-                ],
-              )
+              // Row(
+              //   children: [
+              //     Container(
+              //         margin: copyrightTextMargin,
+              //         child: Text(
+              //           '${album!.copyrightText}',
+              //           style: copyrightTextStyle,
+              //         )),
+              //   ],
+              // )
             ],
           )),
         );

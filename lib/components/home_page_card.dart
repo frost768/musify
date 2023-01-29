@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:spotify_clone/core/consts.dart';
 import 'package:spotify_clone/models/album.dart';
 import 'package:spotify_clone/views/views.dart';
 
@@ -16,27 +15,36 @@ class HomePageCard extends StatelessWidget {
     return FittedBox(
       child: Column(
         children: [
-          Container(
-            width: 150,
-            height: 150,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [Colors.purple, Colors.pink])),
-          ),
+          if (album != null)
+            Container(
+              width: 150,
+              height: 150,
+              child: Image.network(album!.coverBig),
+            )
+          else
+            Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                  gradient:
+                      LinearGradient(colors: [Colors.purple, Colors.pink])),
+            ),
           Container(
               width: 150,
               margin: kMarginTop10,
               height: 40,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (album != null)
                     Text(
-                      album!.name,
+                      album!.title,
                     ),
                   if (showTitle)
                     Text(
                       homePageCardSampleTitle,
                     ),
-                  if (showSubtitle)
+                  if (album == null)
                     Text(
                       homePageCardSampleSubtitle,
                       style: TextStyle(

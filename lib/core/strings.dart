@@ -20,7 +20,7 @@ const String homePageCardSampleTitle = 'Başlık';
 
 // Custom slider
 const String homePageCustomHeaderMoreLikeThis = 'BUNUN GİBİ DAHA FAZLA';
-const String homePageCustomHeaderForFans = 'HAYRANLARI İÇİN';
+const String homePageCustomHeaderForFans = 'İLE BENZER DİĞER MÜZİKLER';
 
 // Create Playlist
 const String createPlaylistTitle = 'Çalma listene bir isim ver.';
@@ -29,19 +29,21 @@ const String createPlaylistCreate = 'OLUŞTUR';
 const String createPlaylistSkip = 'ATLA';
 
 // Library
-const String libraryHeaderMusic = 'Müzik';
+const String libraryHeaderMusic = 'Kitaplığın';
 const String libraryHeaderPodcasts = "Podcast'ler";
 const String libraryTabPlaylists = 'Çalma Listeleri';
 const String libraryTabArtists = 'Sanatçılar';
 const String libraryTabAlbums = 'Albümler';
-const String libraryListTileCreatePlaylist = 'Çalma listesi oluştur';
 const String libraryListTileLikedSongs = 'Beğenilen Şarkılar';
+const String libraryListTileAddArtist = 'Sanatçı ekle';
+const String libraryListTileAddPodcastAndPrograms =
+    'Podcast ve programlar ekle';
 
 // Search
 const String searchViewSliverSearch = 'Ara';
 const String searchViewYourTopGenres = 'En çok dinlediğin türler';
 const String searchViewBrowseAll = 'Hepsine göz at';
-const String searchBarPlaceholder = "Sanatçılar, şarkılar veya podcast'ler";
+const String searchBarPlaceholder = "Ne dinlemek istiyorsun?";
 
 // Player Narrow
 const String playerNarrowAvaiableDevices = 'Kullanılabilir Cihazlar';

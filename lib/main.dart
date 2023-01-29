@@ -3,14 +3,11 @@ import 'package:get/get.dart';
 import 'package:spotify_clone/controllers/player_controller.dart';
 import 'package:spotify_clone/controllers/user_controller.dart';
 import 'package:spotify_clone/core/app.dart';
-import 'package:spotify_clone/data/albums.dart';
-import 'package:spotify_clone/data/artists.dart';
-import 'package:spotify_clone/data/playlists.dart';
+import 'package:spotify_clone/services/cache_service.dart';
 
 void main() {
-  initTracks();
-  initAlbums();
-  initPlaylist();
+  WidgetsFlutterBinding.ensureInitialized();
+  CacheService.init();
   Get.put(UserController());
   Get.put(PlayerController());
   runApp(SpotifyClone());

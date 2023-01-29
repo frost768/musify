@@ -8,7 +8,6 @@ final List<Widget> _pages = [
   HomeView(),
   SearchView(),
   LibraryView(),
-  LikedSongs()
 ];
 final PageController pageController = PageController();
 void onPageChange(int index) {
@@ -18,16 +17,28 @@ void onPageChange(int index) {
 class SpotifyClone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var themeData = ThemeData(
+      colorScheme: ColorScheme.dark(),
+      appBarTheme: AppBarTheme(color: kMainBackColor),
+      primaryIconTheme: IconThemeData(color: Colors.white),
+      scaffoldBackgroundColor: kMainBackColor,
+      textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.green),
+      textTheme: TextTheme(
+          titleLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: Colors.white, backgroundColor: Colors.transparent),
+      progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.green),
+      chipTheme: ChipThemeData(
+        shape: StadiumBorder(side: BorderSide(color: Colors.grey, width: 1)),
+        backgroundColor: Colors.black,
+        selectedColor: Colors.green,
+      ),
+    );
     return GetMaterialApp(
-      theme: ThemeData(
-          primaryColor: kMainColor,
-          colorScheme:
-              ColorScheme.fromSwatch().copyWith(secondary: Colors.green)),
-      darkTheme: ThemeData.dark(),
-      themeMode: ThemeMode.dark,
+      theme: themeData,
       routes: routes,
       home: Scaffold(
-        backgroundColor: kMainBackColor,
+        extendBody: true,
         body: PageView(
           children: _pages,
           controller: pageController,

@@ -1,44 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:spotify_clone/components/explicit_widget.dart';
+import 'package:spotify_clone/controllers/player_controller.dart';
 import 'package:spotify_clone/models/track.dart';
 
 class TrackTile extends StatelessWidget {
   final Track track;
-  bool showAlbumArt;
   final textStyle = TextStyle(fontSize: 12, color: Colors.grey);
-  TrackTile(this.track, {this.showAlbumArt = false, Key? key})
-      : super(key: key);
+  TrackTile(this.track, {Key? key}) : super(key: key);
+  var player = Get.find<PlayerController>();
+  bool get isPlaying {
+    if (player.track == null) return false;
+    return player.track!.title == track.title;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: showAlbumArt
-          ? Container(
-              color: Colors.white,
-              width: 50,
-              height: 50,
-            )
-          : null,
-      title: Text(
-        track.name,
-        style: TextStyle(color: Colors.white),
+      onTap: () => player.playTrack(track),
+      leading: SizedBox(
+        width: 60,
+        height: 60,
+        child: Image.network(track.album.coverBig),
       ),
+      title: isPlaying
+          ? Row(
+              children: [
+                Icon(Icons.equalizer),
+                Text(
+                  track.title,
+                  style: TextStyle(color: Colors.green),
+                )
+              ],
+            )
+          : Text(
+              track.title,
+              style: TextStyle(color: Colors.white),
+            ),
       subtitle: Row(
         children: [
-          if (track.isExplicit) ExplicitWidget(),
+          if (track.explicitLyrics) ExplicitWidget(),
           Text(
             track.artist.name,
             style: textStyle,
           ),
         ],
       ),
-      trailing: !showAlbumArt
-          ? IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.more_vert_outlined,
-                color: Colors.grey,
-              ))
-          : null,
+      trailing: IconButton(
+          onPressed: () {
+            showBottomSheet(
+              context: context,
+              builder: (context) {
+                return Container(
+                  height: Get.height,
+                  width: Get.width,
+                  child: Column(children: [
+                    Text(track.title),
+                    Text(track.artist.name),
+                    ListTile(
+                      title: Text('Sıraya ekle'),
+                      onTap: () {
+                        Get.back();
+                        var player = Get.find<PlayerController>();
+                        player.addToPlaylist(track);
+                      },
+                    )
+                  ]),
+                );
+              },
+            );
+          },
+          icon: Icon(
+            Icons.more_vert_outlined,
+            color: Colors.grey,
+          )),
     );
   }
 }

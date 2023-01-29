@@ -16,7 +16,7 @@ class ArtistCircleCard extends StatelessWidget {
           Container(
             child: CircleAvatar(
               radius: 70,
-              backgroundColor: Colors.white,
+              foregroundImage: Image.network(artist.pictureBig).image,
             ),
           ),
           if (showName!)

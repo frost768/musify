@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_clone/components/home_horizontal_slider.dart';
 import 'package:spotify_clone/components/home_page_slider_custom_header.dart';
-import 'package:spotify_clone/core/consts.dart';
-import 'package:spotify_clone/data/albums.dart';
-import 'package:spotify_clone/data/artists.dart';
+import 'package:spotify_clone/models/track.dart';
+import 'package:spotify_clone/services/cache_service.dart';
 import 'package:spotify_clone/views/views.dart';
 
 class HomeRecommendations extends StatelessWidget {
@@ -13,35 +12,32 @@ class HomeRecommendations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: kMarginLeft10,
-      child: Column(
-        children: [
-          HomeHorizontalSlider(
-              header: HomePageSliderCustomHeader(
-            artist: eminem,
-          )),
-          HomeHorizontalSlider(
-              header: Text(
-            homeUniqueSelections,
-            style: kHeadingTitle,
-          )),
-          HomeHorizontalSlider(
-              header: HomePageSliderCustomHeader(
-            album: kamikaze,
-          )),
-          HomeHorizontalSlider(
-              header: Text(
-            homeRecentlyPlayed,
-            style: kHeadingTitle,
-          )),
-          HomeHorizontalSlider(
-              header: Text(
-            homeListenAgain,
-            style: kHeadingTitle,
-          )),
-        ],
-      ),
+    return Column(
+      children: [
+        // HomeHorizontalSlider(
+        //     header: HomePageSliderCustomHeader(
+        //   artist: eminem,
+        // )),
+        HomeHorizontalSlider(
+            header: Text(
+          homeUniqueSelections,
+          style: Theme.of(context).textTheme.titleLarge,
+        )),
+        HomeHorizontalSlider(
+            header: HomePageSliderCustomHeader(
+          artist: (Track.fromJson(CacheService.trackList.first)).artist,
+        )),
+        HomeHorizontalSlider(
+            header: Text(
+          homeRecentlyPlayed,
+          style: Theme.of(context).textTheme.titleLarge,
+        )),
+        HomeHorizontalSlider(
+            header: Text(
+          homeListenAgain,
+          style: Theme.of(context).textTheme.titleLarge,
+        )),
+      ],
     );
   }
 }

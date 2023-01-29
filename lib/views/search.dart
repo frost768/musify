@@ -16,78 +16,48 @@ class SearchView extends StatelessWidget {
   final gridTitleStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 18);
   final gridTitleMargin = const EdgeInsets.symmetric(vertical: 20);
   final searchViewSliverSearchStyle =
-      TextStyle(fontSize: 50, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   @override
   Widget build(BuildContext context) {
-    return NestedScrollView(
-      headerSliverBuilder: (context, innerBoxIsScrolled) {
-        return [
-          SliverAppBar(
-            flexibleSpace: Container(
-              decoration: boxDecoration,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    searchViewSliverSearch,
-                    style: searchViewSliverSearchStyle,
-                  )
-                ],
+    return SafeArea(
+      top: true,
+      bottom: false,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 40, 40, 20),
+                child: Text(
+                  searchViewSliverSearch,
+                  style: searchViewSliverSearchStyle,
+                ),
               ),
             ),
-            expandedHeight: 140,
-          )
-        ];
-      },
-      body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          child: CustomScrollView(
-            slivers: [
-              SliverPersistentHeader(
-                  pinned: true, delegate: SearchBarPlaceholderSliver()),
-              SliverToBoxAdapter(
-                child: Container(
-                  margin: gridTitleMargin,
-                  child: Text(
-                    searchViewYourTopGenres,
-                    style: gridTitleStyle,
-                  ),
+            SliverPersistentHeader(
+                pinned: true, delegate: SearchBarPlaceholderSliver()),
+            SliverToBoxAdapter(
+              child: Container(
+                margin: gridTitleMargin,
+                child: Text(
+                  searchViewBrowseAll,
+                  style: gridTitleStyle,
                 ),
               ),
-              SliverGrid.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 20,
-                childAspectRatio: 3 / 2,
-                children: List.generate(
-                    4,
-                    (index) => Container(
-                          decoration: dec,
-                        )),
-              ),
-              SliverToBoxAdapter(
-                child: Container(
-                  margin: gridTitleMargin,
-                  child: Text(
-                    searchViewBrowseAll,
-                    style: gridTitleStyle,
-                  ),
-                ),
-              ),
-              SliverGrid.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 20,
-                childAspectRatio: 3 / 2,
-                children: List.generate(
-                    10,
-                    (index) => Container(
-                          decoration: dec,
-                        )),
-              )
-            ],
-          ),
+            ),
+            SliverGrid.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 20,
+              crossAxisSpacing: 20,
+              childAspectRatio: 3 / 2,
+              children: List.generate(
+                  10,
+                  (index) => Container(
+                        decoration: dec,
+                      )),
+            )
+          ],
         ),
       ),
     );

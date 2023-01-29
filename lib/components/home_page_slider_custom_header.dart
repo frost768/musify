@@ -39,7 +39,7 @@ class HomePageSliderCustomHeader extends StatelessWidget {
                 height: 5,
               ),
               Text(
-                album!.name,
+                album!.title,
                 style: subtitle,
               )
             ],

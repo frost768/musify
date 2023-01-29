@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:spotify_clone/data/strings.dart';
 import 'package:spotify_clone/models/album.dart';
 import 'package:spotify_clone/models/artist.dart';
 import 'package:spotify_clone/models/playlist.dart';
 import 'package:spotify_clone/models/track.dart';
 import 'package:spotify_clone/models/user.dart';
+import 'package:spotify_clone/core/strings.dart';
 
 class UserController extends GetxController {
   User user = User(0, 'frost768');
@@ -13,6 +13,8 @@ class UserController extends GetxController {
   List<Track> get favorites => user.favorites;
   List<Artist> get favoriteArtists => user.favoriteArtists;
   List<Album> get favoriteAlbums => user.favoriteAlbums;
+  List recentSearchs = [];
+
   void addToFavoriteArtists(Artist artist) {
     bool inList = user.favoriteAlbums.contains(artist);
     if (!inList) {

@@ -5,4 +5,4 @@ export 'player_full.dart';
 export 'liked_songs.dart';
 export 'search.dart';
 export '../core/consts.dart';
-export '../data/strings.dart';
+export '../core/strings.dart';

@@ -17,18 +17,35 @@ class _BottomNavBarState extends State<BottomNavBar> {
             label: 'Ana Sayfa',
             icon: Icon(
               Icons.home,
+              size: 30,
             )),
         BottomNavigationBarItem(
             label: 'Ara',
             icon: Icon(
               Icons.search,
+              size: 30,
             )),
-        BottomNavigationBarItem(label: 'Kitaplığın', icon: Icon(Icons.dehaze)),
+        BottomNavigationBarItem(
+            label: 'Kitaplığın',
+            icon: Icon(
+              Icons.dehaze,
+              size: 30,
+            )),
       ];
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [
+            Colors.black,
+            Colors.black87,
+            Colors.black54,
+            Colors.transparent
+          ])),
       height: kBottomSideTotalHeight,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -36,7 +53,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
           PlayerNarrow(),
           Divider(
             height: 2,
-            color: kMainBackColor,
           ),
           BottomNavigationBar(
             onTap: (value) {
@@ -45,9 +61,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
               });
               onPageChange(value);
             },
-            selectedItemColor: Colors.white,
             currentIndex: currentIndex,
             items: _icons,
+            selectedLabelStyle: TextStyle(fontSize: 10),
+            unselectedLabelStyle: TextStyle(fontSize: 10),
           ),
         ],
       ),
