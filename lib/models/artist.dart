@@ -1,11 +1,51 @@
-import 'package:spotify_clone/models/album.dart';
-import 'package:spotify_clone/models/base_model.dart';
+class Artist {
+  Artist({
+    required this.id,
+    required this.name,
+    required this.link,
+    required this.picture,
+    required this.pictureSmall,
+    required this.pictureMedium,
+    required this.pictureBig,
+    required this.pictureXl,
+    required this.tracklist,
+    required this.type,
+  });
 
-class Artist extends BaseModel {
-  int listenerCount;
-  bool isFollowing;
-  List<Album> albums;
-  Artist(int id, String name, this.listenerCount,
-      {this.isFollowing = false, this.albums = const []})
-      : super(id: id, name: name);
+  final int id;
+  final String name;
+  final String link;
+  final String picture;
+  final String pictureSmall;
+  final String pictureMedium;
+  final String pictureBig;
+  final String pictureXl;
+  final String tracklist;
+  final String type;
+
+  factory Artist.fromMap(Map<String, dynamic> json) => Artist(
+        id: json["id"],
+        name: json["name"],
+        link: json["link"],
+        picture: json["picture"],
+        pictureSmall: json["picture_small"],
+        pictureMedium: json["picture_medium"],
+        pictureBig: json["picture_big"],
+        pictureXl: json["picture_xl"],
+        tracklist: json["tracklist"],
+        type: json["type"],
+      );
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "name": name,
+        "link": link,
+        "picture": picture,
+        "picture_small": pictureSmall,
+        "picture_medium": pictureMedium,
+        "picture_big": pictureBig,
+        "picture_xl": pictureXl,
+        "tracklist": tracklist,
+        "type": type,
+      };
 }
