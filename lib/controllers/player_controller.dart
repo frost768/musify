@@ -25,6 +25,7 @@ class PlayerController extends GetxController {
     update();
   }
 
+  int get timeInMilliseconds => Duration(seconds: time.toInt()).inMilliseconds;
   final playerScrollerPageController = PageController();
   AudioPlayer _audioPlayer = AudioPlayer();
   bool isShuffleOpen = false;
@@ -34,9 +35,11 @@ class PlayerController extends GetxController {
   Track? track;
   Playlist playlist = Playlist(0, 'd');
   bool isPlaying = false;
+  Function()? onPositionChanged;
   PlayerController() {
     _audioPlayer.onPositionChanged.listen((event) {
       time.value = event.inSeconds;
+      update();
     });
     _audioPlayer.onPlayerStateChanged.listen((event) {
       switch (event) {

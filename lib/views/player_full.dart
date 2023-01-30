@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lyric/lyrics_reader.dart';
+import 'package:flutter_lyric/lyrics_reader_model.dart';
 import 'package:get/get.dart';
 import 'package:spotify_clone/components/player_scroller.dart';
 import 'package:spotify_clone/controllers/player_controller.dart';
+import 'package:spotify_clone/services/lyrics_service.dart';
 
 import 'package:spotify_clone/views/views.dart';
 
@@ -298,14 +301,70 @@ class LyricsCard extends StatefulWidget {
   State<LyricsCard> createState() => _LyricsCardState();
 }
 
+class LyUI extends UINetease {
+  LyUI()
+      : super(
+          lyricAlign: LyricAlign.LEFT,
+          defaultSize: 30,
+          otherMainSize: 20,
+          defaultExtSize: 10,
+        );
+  @override
+  Color getLyricHightlightColor() {
+    return Colors.white;
+  }
+
+  @override
+  TextStyle getPlayingMainTextStyle() {
+    return TextStyle(
+        fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white);
+  }
+
+  @override
+  TextStyle getOtherMainTextStyle() {
+    return TextStyle(
+        fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white60);
+  }
+
+  @override
+  bool get highlight => true;
+  @override
+  double get lineGap => 10;
+}
+
 class _LyricsCardState extends State<LyricsCard> {
+  final lyricUI = LyUI();
+  String lrc = '';
+
+  bool isLoading = true;
+  LyricsReaderModel _getLyricModel(String lrc) =>
+      LyricsModelBuilder.create().bindLyricToMain(lrc).getModel();
+  PlayerController? player;
+  @override
+  void initState() {
+    super.initState();
+    player = Get.find<PlayerController>();
+    player!.onPositionChanged = () {
+      setState(() {});
+    };
+    fetch();
+  }
+
+  void fetch() async {
+    lrc = await LyricsifyLyricsFinder()
+        .getLrc(player!.track!.title, player!.track!.artist.name);
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  double _offset = 0;
   @override
   Widget build(BuildContext context) {
-    var _scrollController = ScrollController();
     return Container(
       margin: const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 30),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      height: 350,
+      padding: const EdgeInsets.only(left: 10, top: 5),
+      height: 370,
       decoration: BoxDecoration(
           color: Colors.red, borderRadius: BorderRadius.circular(10)),
       child: Column(
@@ -323,30 +382,28 @@ class _LyricsCardState extends State<LyricsCard> {
             ),
           ),
           Expanded(
-            flex: 5,
-            child: ListView(
-              itemExtent: 100,
-              controller: _scrollController,
-              // physics: NeverScrollableScrollPhysics(),
-              children: g
-                  .split('\n')
-                  .map((e) => Text(
-                        e,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(fontSize: 25),
-                      ))
-                  .toList(),
+            flex: 10,
+            child: Visibility(
+              visible: !isLoading,
+              replacement: Center(child: CircularProgressIndicator()),
+              child: LyricsReader(
+                model: _getLyricModel(lrc),
+                position: player!.timeInMilliseconds + (_offset * 100).toInt(),
+                lyricUi: lyricUI,
+                playing: player!.isPlaying,
+                size: Size(
+                    double.infinity, MediaQuery.of(context).size.height / 2),
+                emptyBuilder: () => Center(
+                  child: Text(
+                    "No lyrics",
+                    style: lyricUI.getOtherMainTextStyle(),
+                  ),
+                ),
+              ),
             ),
           ),
           ActionChip(
-              onPressed: () {
-                _scrollController.position.animateTo(
-                    _scrollController.offset + 100,
-                    duration: Duration(milliseconds: 100),
-                    curve: Curves.linear);
-              },
+              onPressed: () {},
               visualDensity: VisualDensity(vertical: -2),
               backgroundColor: Colors.red,
               avatar: Icon(
@@ -359,46 +416,3 @@ class _LyricsCardState extends State<LyricsCard> {
     );
   }
 }
-
-const g = """Die Erde hat sich um die Sonne
-Schon hundertachtzig Grad gedreht
-Ist schon verrückt, wie schnell ein halbes Jahr mit dir vergeht
-Hätt' nicht gedacht, dass es uns so weit trägt
-Der Asphalt flimmert in der Hitze
-Doch die Luft in mir gefriert
-Es kommt ein Gewitter auf, ich weiß genau, was jetzt passiert
-Wenn Liebesmut gegen Angst verliert
-Meine Schritte werden schneller
-Doch ich will uns nicht verlier'n
-Diesmal ist es anders
-Du bist für mich besonders
-Und selbst wenn mich mein Fluchtreflex einholt
-Und auch dich verletzt, ich glaub' an uns
-Ich kann das, ich kann das
-Man weiß doch, wie das ist
-Sobald es ernst zu werden droht
-Fluten Million'n Gründe, warum das mit uns nicht funktioniert
-Meine Straßen, bis ich kapitulier'
-Aber was, wenn das nicht sein muss?
-Wenn es Milliarden Gründe gibt
-Die man nur suchen muss; die uns zusammenhalten
-Wenn alle Welt um uns sich trennt
-Meine Schritte werden schneller
-Doch ich werd' uns nicht verlier'n
-Diesmal ist es anders
-Du bist für mich besonders
-Und selbst wenn mich mein Fluchtreflex einholt
-Und auch dich verletzt, ich glaub' an uns
-Ich kann das, ich kann das, oh-oh, oh-oh
-Oh-oh, oh-oh
-Ich gehör' ab jetzt zu dir
-Keine Chance, dass wir uns je wieder verlier'n
-Denn diesmal ist es anders
-Du bist für mich besonders
-Und selbst wenn mich mein Fluchtreflex einholt
-Und auch dich verletzt, ich glaub' an uns
-Ich kann das, ich kann das
-Denn diesmal ist es anders
-Ich kann das, oh-oh
-Ich kann das, ich kann das, oh-oh
-Ich kann das, ich kann das""";

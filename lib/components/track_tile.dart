@@ -11,7 +11,7 @@ class TrackTile extends StatelessWidget {
   var player = Get.find<PlayerController>();
   bool get isPlaying {
     if (player.track == null) return false;
-    return player.track!.title == track.title;
+    return player.track!.id == track.id;
   }
 
   @override

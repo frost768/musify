@@ -49,17 +49,11 @@ class PlayerScroller extends StatelessWidget {
                 ],
               );
             } else {
-              var index2 = player.playlist.tracks.indexOf(player.track!);
-              print(index);
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Column(
-                  children: [
-                    Text(index.toString()),
-                    Image.network(
-                      player.playlist.tracks[index2].album.coverXl,
-                    ),
-                  ],
+                child: Image.network(
+                  player.playlist.tracks[index % player.playlist.tracks.length]
+                      .album.coverXl,
                 ),
               );
             }
