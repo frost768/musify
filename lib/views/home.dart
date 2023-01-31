@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/diagnostics.dart';
-import 'package:get/get.dart';
 import 'package:spotify_clone/components/home_playlist_section.dart';
 import 'package:spotify_clone/components/home_recommendations.dart';
 import 'package:spotify_clone/core/consts.dart';
@@ -36,8 +34,7 @@ class HomeView extends StatelessWidget {
             ],
           )),
         ),
-
-        // SliverToBoxAdapter(child: HomePlaylistSection()),
+        SliverToBoxAdapter(child: HomePlaylistSection()),
         SliverToBoxAdapter(child: HomeRecommendations()),
         SliverToBoxAdapter(child: SizedBox(height: kBottomSideTotalHeight))
       ]),

@@ -20,6 +20,14 @@ class SpotifyClone extends StatelessWidget {
     var themeData = ThemeData(
       colorScheme: ColorScheme.dark(),
       appBarTheme: AppBarTheme(color: kMainBackColor),
+      sliderTheme: SliderThemeData(
+          inactiveTrackColor: Colors.transparent,
+          activeTrackColor: Color.fromARGB(255, 38, 38, 38),
+          thumbColor: Color.fromARGB(255, 38, 38, 38),
+          trackHeight: 3,
+          thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5.0),
+          overlayShape: RoundSliderOverlayShape(overlayRadius: 5.0),
+          trackShape: RectangularSliderTrackShape()),
       primaryIconTheme: IconThemeData(color: Colors.white),
       scaffoldBackgroundColor: kMainBackColor,
       textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.green),
@@ -43,7 +51,7 @@ class SpotifyClone extends StatelessWidget {
           children: _pages,
           controller: pageController,
           onPageChanged: onPageChange,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
         ),
         bottomNavigationBar: BottomNavBar(),
       ),

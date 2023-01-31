@@ -14,22 +14,23 @@ class PlayerNarrow extends StatelessWidget {
       builder: (PlayerController player) {
         if (player.track == null) return Container();
         return Container(
-          height: kPlayerNarrowHeight,
-          margin: EdgeInsets.symmetric(horizontal: 5),
+          margin: EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
               color: Colors.grey.shade800,
-              borderRadius: BorderRadius.circular(10)),
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+              borderRadius: BorderRadius.circular(5)),
+          padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: kPlayerNarrowHeight - kPlayerElapsedTimeNarrowHeight,
+                height: kPlayerNarrowHeight,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     // Album Art
+
                     Expanded(
+                      flex: 2,
                       child: GestureDetector(
                         onTap: () => Get.to(() => PlayerFull(),
                             transition: Transition.downToUp),
@@ -38,15 +39,14 @@ class PlayerNarrow extends StatelessWidget {
                             Container(
                               height: 40,
                               width: 40,
+                              margin: const EdgeInsets.only(right: 10),
                               child:
                                   Image.network(player.track!.album.coverBig),
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            SizedBox(width: 10),
-                            // Song Info
                             Expanded(child: PlayerScroller(isNarrow: true)),
                           ],
                         ),
@@ -69,12 +69,14 @@ class PlayerNarrow extends StatelessWidget {
                               player.toggleLike();
                             },
                             icon: Icon(
-                                player.track!.liked
-                                    ? Icons.favorite
-                                    : Icons.favorite_outline,
-                                color: player.track!.liked
-                                    ? Colors.green
-                                    : Colors.white),
+                              player.track!.liked
+                                  ? Icons.favorite
+                                  : Icons.favorite_outline,
+                              color: player.track!.liked
+                                  ? Colors.green
+                                  : Colors.white,
+                              size: 30,
+                            ),
                           ),
                           IconButton(
                             onPressed: () {
@@ -82,6 +84,7 @@ class PlayerNarrow extends StatelessWidget {
                             },
                             icon: Icon(
                               player.isPlaying ? Icons.pause : Icons.play_arrow,
+                              size: 30,
                             ),
                           )
                         ],

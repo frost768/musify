@@ -52,7 +52,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         children: [
           PlayerNarrow(),
           Divider(
-            height: 2,
+            height: 10,
           ),
           BottomNavigationBar(
             onTap: (value) {

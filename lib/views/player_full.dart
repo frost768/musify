@@ -86,10 +86,14 @@ class PlayerControls extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            controller.track!.title,
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 1.4,
+                            child: Text(
+                              controller.track!.title,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
                           ),
                           Text(
                             controller.track!.artist.name,
@@ -111,10 +115,9 @@ class PlayerControls extends StatelessWidget {
                       ),
                     ],
                   ),
+                  SizedBox(height: 20),
                   Obx(
                     () => Slider(
-                        inactiveColor: Colors.black12,
-                        activeColor: Color.fromARGB(255, 61, 61, 61),
                         value: controller.time.value.toDouble(),
                         max: controller.track!.pDuration.inSeconds.toDouble(),
                         onChangeEnd: (value) => controller.seek(value.toInt()),

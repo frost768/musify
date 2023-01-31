@@ -26,10 +26,18 @@ class TrackTile extends StatelessWidget {
       title: isPlaying
           ? Row(
               children: [
-                Icon(Icons.equalizer),
-                Text(
-                  track.title,
-                  style: TextStyle(color: Colors.green),
+                Icon(
+                  Icons.equalizer,
+                  size: 20,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width / 2 - 5,
+                  margin: const EdgeInsets.only(left: 5),
+                  child: Text(
+                    track.title,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: Colors.green),
+                  ),
                 )
               ],
             )
