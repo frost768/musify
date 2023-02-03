@@ -13,9 +13,7 @@ class HomePlaylistSection extends StatelessWidget {
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
       color: Colors.white);
-  HomePlaylistSection({
-    Key? key,
-  }) : super(key: key);
+  HomePlaylistSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

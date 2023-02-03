@@ -38,7 +38,7 @@ class SpotifyClone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var themeData = ThemeData(
-      useMaterial3: false,
+      useMaterial3: true,
       indicatorColor: Colors.green.shade800,
       scaffoldBackgroundColor: kMainBackColor,
       colorScheme: ColorScheme.dark().copyWith(primary: Colors.green.shade800),
@@ -69,6 +69,7 @@ class SpotifyClone extends StatelessWidget {
           showCheckmark: false),
     );
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: themeData,
       routes: routes,
       home: Scaffold(

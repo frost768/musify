@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:spotify_clone/components/bottom_nav_bar_height.dart';
 import 'package:spotify_clone/components/home_playlist_section.dart';
 import 'package:spotify_clone/components/home_recommendations.dart';
-import 'package:spotify_clone/core/strings.dart';
+import 'package:spotify_clone/views/views.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({Key? key}) : super(key: key);
@@ -21,18 +21,33 @@ class HomeView extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           actions: [
-            Icon(Icons.notifications),
-            Icon(Icons.settings),
-            Icon(Icons.settings),
+            IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
+            IconButton(onPressed: () {}, icon: Icon(Icons.history)),
+            IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
           ],
-          bottom: AppBar(
-              title: Row(
-            children: [
-              Text('Müzik'),
-              SizedBox(width: 10),
-              Text('data'),
-            ],
-          )),
+          bottom: PreferredSize(
+              preferredSize: Size(double.infinity, 50),
+              child: SizedBox(
+                height: 50,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Row(
+                    children: [
+                      FilterChip(
+                        side: BorderSide(color: kMainBackColor),
+                        label: Text('Müzik'),
+                        onSelected: (bool value) {},
+                      ),
+                      SizedBox(width: 10),
+                      FilterChip(
+                        side: BorderSide(color: kMainBackColor),
+                        label: Text(kPodcastsAndPrograms),
+                        onSelected: (bool value) {},
+                      ),
+                    ],
+                  ),
+                ),
+              )),
         ),
         SliverToBoxAdapter(child: HomePlaylistSection()),
         SliverToBoxAdapter(child: HomeRecommendations()),

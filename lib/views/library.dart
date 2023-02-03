@@ -28,10 +28,7 @@ class LibraryView extends StatelessWidget {
           ],
           title: Row(
             children: [
-              CircleAvatar(
-                radius: 15,
-                backgroundColor: Colors.white,
-              ),
+              CircleAvatar(radius: 15, backgroundColor: Colors.white),
               SizedBox(width: 10),
               Text(libraryHeaderMusic),
             ],

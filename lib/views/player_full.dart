@@ -181,8 +181,8 @@ class _PlayerControls extends ConsumerWidget {
           child: IconButton(
               iconSize: 50,
               onPressed: player.togglePlay,
-              icon: Icon(playerState.isPlaying ? Icons.pause : Icons.play_arrow,
-                  size: 40),
+              icon:
+                  Icon(playerState.isPlaying ? Icons.pause : Icons.play_arrow),
               color: Colors.black),
         ),
         IconButton(

@@ -5,11 +5,11 @@ export 'extensions.dart';
 class LyUI extends UINetease {
   LyUI()
       : super(
-          lyricAlign: LyricAlign.LEFT,
-          defaultSize: 30,
-          otherMainSize: 20,
-          defaultExtSize: 10,
-        );
+            lyricAlign: LyricAlign.LEFT,
+            defaultSize: 10,
+            otherMainSize: 10,
+            defaultExtSize: 90,
+            lineGap: 10);
   @override
   Color getLyricHightlightColor() {
     return Colors.white;
@@ -26,11 +26,6 @@ class LyUI extends UINetease {
     return TextStyle(
         fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white60);
   }
-
-  @override
-  bool get highlight => true;
-  @override
-  double get lineGap => 10;
 }
 
 const Map<String, String> searchPageChiplist = const {
@@ -45,6 +40,8 @@ const Map<String, String> libraryChiplist = const {
   'album': 'Albümler',
   'artist': "Sanatçılar",
 };
+
+const kPodcastsAndPrograms = "Podcast'ler ve programlar";
 const kMainColor = Color(0xff292929);
 const kPlayerNarrowHeight = 55.0;
 const kPlayerElapsedTimeNarrowHeight = 2.0;
@@ -53,8 +50,7 @@ const kBottomSideTotalHeight = 130.0;
 const kMainBackColor = Color.fromARGB(255, 0, 0, 0);
 const kMarginLeft10 = EdgeInsets.only(left: 10);
 const kMarginTop10 = EdgeInsets.only(top: 10);
-const kPlayerTimeStringStyle =
-    const TextStyle(fontSize: 12, color: Colors.grey);
+const kPlayerTimeStringStyle = TextStyle(fontSize: 12, color: Colors.grey);
 
 const kTableTitle = TextStyle(fontWeight: FontWeight.bold, fontSize: 15);
 const kLibraryTabStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 14);
