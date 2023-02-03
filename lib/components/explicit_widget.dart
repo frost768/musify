@@ -12,7 +12,6 @@ class ExplicitWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: boxDecoration,
-        padding: const EdgeInsets.all(2),
         margin: const EdgeInsets.only(right: 4),
         height: 12,
         width: 12,

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spotify_clone/components/explicit_widget.dart';
-import 'package:spotify_clone/components/playlist_tile.dart';
-import 'package:spotify_clone/components/track_tile.dart';
-import 'package:spotify_clone/controllers/player_controller.dart';
-import 'package:spotify_clone/controllers/user_controller.dart';
+import 'package:spotify_clone/components/filter_chips.dart';
 import 'package:spotify_clone/models/search_result.dart';
 import 'package:spotify_clone/models/track.dart';
+import 'package:spotify_clone/providers/player_provider.dart';
+import 'package:spotify_clone/providers/playlist_provider.dart';
 import 'package:spotify_clone/services/api_service.dart';
 
 class Search extends SearchDelegate {
@@ -18,9 +17,9 @@ class Search extends SearchDelegate {
 
   @override
   List<Widget>? buildActions(BuildContext context) {
-    return [
-      Container(),
-    ];
+    return query.isEmpty
+        ? [IconButton(onPressed: () {}, icon: Icon(Icons.photo_camera))]
+        : [IconButton(onPressed: () => query = '', icon: Icon(Icons.clear))];
   }
 
   @override
@@ -35,34 +34,33 @@ class Search extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return GetBuilder(
-        init: UserController(),
-        builder: (UserController user) {
-          if (user.recentSearchs.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Sevdiğini çal',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  Text('Sanatçı, şarkı, podcast ve daha fazlasını ara'),
-                ],
-              ),
-            );
-          }
-          return ListView(
-            children: [
-              ListTile(title: Text('Yakındaki Aramalar')),
-              ...user.recentSearchs.map((e) => SearchTile(e)).toList(),
-              ListTile(
-                title: Text('Son arananları temizle'),
-                onTap: () => user.recentSearchs.clear(),
-              ),
-            ],
-          );
-        });
+    if (query.length > 0) {
+      return NewWidget(query: query);
+    }
+    if ([].isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Sevdiğini çal',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            Text('Sanatçı, şarkı, podcast ve daha fazlasını ara'),
+          ],
+        ),
+      );
+    }
+    return ListView(
+      children: [
+        ListTile(title: Text('Yakındaki Aramalar')),
+        // ...[].map((e) => SearchTile(e)).toList(),
+        ListTile(
+          title: Text('Son arananları temizle'),
+          // onTap: () => user.recentSearchs.clear(),
+        ),
+      ],
+    );
   }
 }
 
@@ -86,8 +84,10 @@ class _NewWidgetState extends State<NewWidget> {
   }
 
   fetch() async {
-    response = await ApiService().search(widget.query);
-    setState(() {});
+    if (widget.query.isNotEmpty) {
+      response = await ApiService().search(widget.query);
+      setState(() {});
+    }
   }
 
   SearchResult? response;
@@ -99,8 +99,7 @@ class _NewWidgetState extends State<NewWidget> {
 
     return Column(
       children: [
-        Expanded(child: FilterChips()),
-        Text(response!.data.length.toString()),
+        SearchPageFilterChips(),
         Expanded(
           flex: 12,
           child: NotificationListener<ScrollEndNotification>(
@@ -114,69 +113,100 @@ class _NewWidgetState extends State<NewWidget> {
                   response!.data.addAll(value.data);
                   response!.next = value.next;
                 });
-                print(response!.data.length.toString() +
-                    '  -  ' +
-                    response!.total.toString());
               }
               setState(() {});
-              return false;
+              return response!.next == null;
             },
-            child: ListView.builder(
-                itemCount: response!.all.length,
-                itemBuilder: (context, index) {
-                  var e = response!.all[index];
-                  return SearchTile(e);
-                }),
+            child: Consumer(
+              builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                final filter = ref.watch(searchPageFilterProvider);
+                if (filter == 'album') {
+                  return AlbumSearchView(response: response);
+                }
+
+                return ListView.builder(
+                    itemCount: response!.all
+                        .where((e) => filter.isEmpty ? true : e.type == filter)
+                        .length,
+                    itemBuilder: (context, index) {
+                      var e = response!.all
+                          .where(
+                              (e) => filter.isEmpty ? true : e.type == filter)
+                          .elementAt(index);
+                      return SearchTile(e, filter);
+                    });
+              },
+            ),
           ),
-        )
+        ),
+        // BottomNavBar()
       ],
     );
   }
 }
 
-class FilterChips extends StatefulWidget {
-  const FilterChips({key});
+class AlbumSearchView extends StatelessWidget {
+  const AlbumSearchView({
+    Key? key,
+    required this.response,
+  }) : super(key: key);
 
-  @override
-  State<FilterChips> createState() => _FilterChipsState();
-}
+  final SearchResult? response;
 
-class _FilterChipsState extends State<FilterChips> {
-  Map<String, String> chipList = {
-    'result': 'En İyi Sonuçlar',
-    'artist': 'Sanatçılar',
-    'track': 'Şarkılar',
-    'album': 'Albümler',
-  };
   @override
   Widget build(BuildContext context) {
-    return ListView(
-        scrollDirection: Axis.horizontal,
-        children: chipList.entries
-            .map((e) => Chip(
-                  label: Text(e.value),
+    return GridView.count(
+        mainAxisSpacing: 15,
+        crossAxisSpacing: 15,
+        crossAxisCount: 2,
+        children: response!.albumList
+            .map((e) => GridTile(
+                  footer: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      e.title,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  child: Container(
+                    foregroundDecoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [
+                            Colors.black,
+                            Colors.transparent,
+                          ],
+                          stops: [
+                            0.1,
+                            1,
+                          ]),
+                    ),
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: Image.network(e.coverBig).image)),
+                  ),
                 ))
             .toList());
   }
 }
 
-class SearchTile extends StatelessWidget {
+class SearchTile extends ConsumerWidget {
   dynamic e;
-  SearchTile(this.e, {key});
-  late Widget subtitle;
+  String filter;
+  SearchTile(this.e, this.filter, {key});
+  late Widget? subtitle;
   late String title;
   late Widget leading;
   Widget? trailing;
-
-  void _onTap() {
-    var user = Get.find<UserController>();
-    user.recentSearchs.add(e);
+  TextStyle titleStyle = const TextStyle();
+  void _onTap(WidgetRef ref, dynamic e) {
+    // user.recentSearchs.add(e);
     switch (e.type) {
       case 'artist':
         return null;
       case 'track':
-        var player = Get.find<PlayerController>();
-        player.playTrack(e);
+        ref.read(playerStateProvider.notifier).play(track: e, fromSearch: true);
         break;
       default:
         return null;
@@ -184,7 +214,7 @@ class SearchTile extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     switch (e.type) {
       case 'artist':
         title = e.name;
@@ -195,11 +225,14 @@ class SearchTile extends StatelessWidget {
       case 'track':
         title = e.title;
         subtitle = !e.explicitLyrics
-            ? Text(resolveType(e.type) + ' - ' + (e as Track).artist.name)
+            ? Text((e as Track).artist.name)
             : Row(
                 children: [
                   ExplicitWidget(),
-                  Text(resolveType(e.type) + ' - ' + (e as Track).artist.name)
+                  Text('${filter == 'track' ? (e as Track).artist.name : [
+                      resolveType(e.type),
+                      (e as Track).artist.name
+                    ].join(' - ')}')
                 ],
               );
         leading = Image.network(e.album.coverBig);
@@ -209,17 +242,16 @@ class SearchTile extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return Container(
-                    height: Get.height,
-                    width: Get.width,
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
                     child: Column(children: [
                       Text(e.title),
                       Text(e.artist.name),
                       ListTile(
                         title: Text('Sıraya ekle'),
                         onTap: () {
-                          Get.back();
-                          var player = Get.find<PlayerController>();
-                          player.addToPlaylist(e);
+                          Navigator.of(context).pop();
+                          ref.read(playListProvider.notifier).addToPlaylist(e);
                         },
                       )
                     ]),
@@ -235,58 +267,17 @@ class SearchTile extends StatelessWidget {
         leading = Image.network(e.coverBig);
         break;
     }
+    if (filter.isNotEmpty && e.type != 'track') subtitle = null;
     return ListTile(
+      contentPadding: e.type == 'artist' ? const EdgeInsets.all(10) : null,
       leading: SizedBox(width: 60, height: 60, child: leading),
-      title: Text(title),
+      title: Text(title,
+          style: ref.watch(currentTrackProvider)!.id == e.id
+              ? titleStyle.copyWith(color: Colors.green)
+              : titleStyle),
       subtitle: subtitle,
       trailing: trailing,
-      onTap: _onTap,
+      onTap: () => _onTap(ref, e),
     );
-    //   switch (e.type) {
-    //     case 'artist':
-    //       e = e as Artist;
-    //       return ArtistListTile(e.name, e.pictureBig);
-    //     case 'track':
-    //       e = e as Track;
-    //       var player = Get.find<PlayerController>();
-    //       return ListTile(
-    //         leading: Image.network(e.album.coverMedium),
-    //         trailing: IconButton(
-    //           icon: Icon(Icons.more_vert),
-    //           onPressed: () => showBottomSheet(
-    //             context: context,
-    //             builder: (context) {
-    //               return Container(
-    //                 height: Get.height,
-    //                 width: Get.width,
-    //                 child: Column(children: [
-    //                   Text(e.title),
-    //                   Text(e.artist.name),
-    //                   ListTile(
-    //                     title: Text('Sıraya ekle'),
-    //                     onTap: () {
-    //                       Get.back();
-    //                       player.addToPlaylist(e);
-    //                     },
-    //                   )
-    //                 ]),
-    //               );
-    //             },
-    //           ),
-    //         ),
-    //         title: Text(e.title),
-    //         subtitle: Row(
-    //           children: [
-    //             if (e.explicitLyrics) ExplicitWidget(),
-    //             Text('${resolveType(e.type)} - ${e.artist.name}'),
-    //           ],
-    //         ),
-    //         onTap: () => player.playTrack(e),
-    //       );
-    //     default:
-    //       e = e as Album;
-    //       return PlaylistTile(e.title, coverUrl: e.coverXl);
-    //   }
-    // }
   }
 }
