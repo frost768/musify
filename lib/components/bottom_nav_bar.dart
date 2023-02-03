@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_clone/components/player_narrow.dart';
+import 'package:spotify_clone/components/search_page.dart';
 import 'package:spotify_clone/core/app.dart';
 import 'package:spotify_clone/views/views.dart';
 
@@ -57,8 +58,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
           BottomNavigationBar(
             onTap: (value) {
               setState(() {
+                if (value == 1 && currentIndex == 1) {
+                  showSearch(context: context, delegate: Search());
+                }
                 currentIndex = value;
               });
+
               onPageChange(value);
             },
             currentIndex: currentIndex,
