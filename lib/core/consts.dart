@@ -1,6 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lyric/lyrics_reader.dart';
 export 'extensions.dart';
 
+class LyUI extends UINetease {
+  LyUI()
+      : super(
+          lyricAlign: LyricAlign.LEFT,
+          defaultSize: 30,
+          otherMainSize: 20,
+          defaultExtSize: 10,
+        );
+  @override
+  Color getLyricHightlightColor() {
+    return Colors.white;
+  }
+
+  @override
+  TextStyle getPlayingMainTextStyle() {
+    return TextStyle(
+        fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white);
+  }
+
+  @override
+  TextStyle getOtherMainTextStyle() {
+    return TextStyle(
+        fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white60);
+  }
+
+  @override
+  bool get highlight => true;
+  @override
+  double get lineGap => 10;
+}
+
+const Map<String, String> searchPageChiplist = const {
+  '': 'En İyi Sonuçlar',
+  'artist': 'Sanatçılar',
+  'track': 'Şarkılar',
+  'album': 'Albümler',
+};
+const Map<String, String> libraryChiplist = const {
+  'playlist': 'Çalma Listeleri',
+  'podcast': "Podcast'ler ve programlar",
+  'album': 'Albümler',
+  'artist': "Sanatçılar",
+};
 const kMainColor = Color(0xff292929);
 const kPlayerNarrowHeight = 55.0;
 const kPlayerElapsedTimeNarrowHeight = 2.0;
@@ -9,7 +53,8 @@ const kBottomSideTotalHeight = 130.0;
 const kMainBackColor = Color.fromARGB(255, 0, 0, 0);
 const kMarginLeft10 = EdgeInsets.only(left: 10);
 const kMarginTop10 = EdgeInsets.only(top: 10);
-const kPlayerTimeStringStyle = TextStyle(fontSize: 12, color: Colors.grey);
+const kPlayerTimeStringStyle =
+    const TextStyle(fontSize: 12, color: Colors.grey);
 
 const kTableTitle = TextStyle(fontWeight: FontWeight.bold, fontSize: 15);
 const kLibraryTabStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 14);
