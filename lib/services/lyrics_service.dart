@@ -28,7 +28,7 @@ class LyricsifyLyricsFinder extends LyricsFinder {
     if (response.statusCode != 200) {
       return '';
     }
-    return getLrcFromHtml(response.data, artistName, trackName);
+    return _getLrcFromHtml(response.data, artistName, trackName);
   }
 
   @override
@@ -39,7 +39,7 @@ class LyricsifyLyricsFinder extends LyricsFinder {
     throw UnimplementedError();
   }
 
-  Future<String> getLrcFromHtml(
+  Future<String> _getLrcFromHtml(
       String html, String artistName, String trackName) async {
     client.options.headers = headers2;
     final res =
@@ -61,7 +61,6 @@ class LyricsifyLyricsFinder extends LyricsFinder {
     // }
     if (matched.isEmpty) return '';
 
-    final name = matched.first.group(2);
     final url = '${baseUrl}lyric/' + matched.first.group(1)!;
     final html2 = await client.get<String>(url);
     final f = regex.allMatches(html2.data!);
