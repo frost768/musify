@@ -25,7 +25,7 @@ class HomeRecommendations extends StatelessWidget {
         )),
         HomeHorizontalSlider(
             header: HomePageSliderCustomHeader(
-          artist: (Track.fromJson(CacheService.trackList.first)).artist,
+          artist: (Track.fromJson(CacheService().trackList.first)).artist,
         )),
         HomeHorizontalSlider(
             header: Text(

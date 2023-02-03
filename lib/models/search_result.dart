@@ -68,7 +68,7 @@ class SearchResult {
   String? next;
 
   factory SearchResult.fromMap(Map<String, dynamic> json) => SearchResult(
-        data: List<Track>.from(json["data"].map((x) => Track.fromMap(x))),
+        data: List<Track>.from(json["data"]?.map((x) => Track.fromMap(x))),
         total: json["total"],
         next: json["next"],
       );

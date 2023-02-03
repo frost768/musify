@@ -11,6 +11,7 @@ class Track {
     required this.titleShort,
     required this.titleVersion,
     required this.link,
+    required this.liked,
     required this.duration,
     required this.rank,
     required this.explicitLyrics,
@@ -22,7 +23,7 @@ class Track {
     required this.album,
     required this.type,
   });
-  bool liked = false;
+  bool liked;
   final int id;
   final bool readable;
   final String title;
@@ -40,6 +41,7 @@ class Track {
   final Album album;
   final String type;
   String url = '';
+
   Duration get pDuration => Duration(seconds: duration);
   factory Track.fromMap(Map<String, dynamic> json) => Track(
         id: json["id"],
@@ -49,6 +51,7 @@ class Track {
         titleVersion: json["title_version"],
         link: json["link"],
         duration: json["duration"],
+        liked: false,
         rank: json["rank"],
         explicitLyrics: json["explicit_lyrics"],
         explicitContentLyrics: json["explicit_content_lyrics"],
@@ -68,6 +71,7 @@ class Track {
         "title_version": titleVersion,
         "link": link,
         "duration": duration,
+        "liked": liked,
         "rank": rank,
         "explicit_lyrics": explicitLyrics,
         "explicit_content_lyrics": explicitContentLyrics,
@@ -80,4 +84,44 @@ class Track {
       };
   String toJson() => jsonEncode(toMap());
   factory Track.fromJson(String json) => Track.fromMap(jsonDecode(json));
+
+  Track copyWith({
+    int? id,
+    bool? readable,
+    String? title,
+    String? titleShort,
+    String? titleVersion,
+    String? link,
+    bool? liked,
+    int? rank,
+    bool? explicitLyrics,
+    int? explicitContentLyrics,
+    int? explicitContentCover,
+    String? preview,
+    String? md5Image,
+    Artist? artist,
+    Album? album,
+    String? type,
+  }) {
+    return Track(
+      id: id ?? this.id,
+      readable: readable ?? this.readable,
+      title: title ?? this.title,
+      titleShort: titleShort ?? this.titleShort,
+      titleVersion: titleVersion ?? this.titleVersion,
+      link: link ?? this.link,
+      liked: liked ?? this.liked,
+      duration: duration,
+      rank: rank ?? this.rank,
+      explicitLyrics: explicitLyrics ?? this.explicitLyrics,
+      explicitContentLyrics:
+          explicitContentLyrics ?? this.explicitContentLyrics,
+      explicitContentCover: explicitContentCover ?? this.explicitContentCover,
+      preview: preview ?? this.preview,
+      md5Image: md5Image ?? this.md5Image,
+      artist: artist ?? this.artist,
+      album: album ?? this.album,
+      type: type ?? this.type,
+    );
+  }
 }

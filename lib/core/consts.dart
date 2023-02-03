@@ -1,6 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lyric/lyrics_reader.dart';
 export 'extensions.dart';
 
+class LyUI extends UINetease {
+  LyUI()
+      : super(
+            lyricAlign: LyricAlign.LEFT,
+            defaultSize: 10,
+            otherMainSize: 10,
+            defaultExtSize: 90,
+            lineGap: 10);
+  @override
+  Color getLyricHightlightColor() {
+    return Colors.white;
+  }
+
+  @override
+  TextStyle getPlayingMainTextStyle() {
+    return TextStyle(
+        fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white);
+  }
+
+  @override
+  TextStyle getOtherMainTextStyle() {
+    return TextStyle(
+        fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white60);
+  }
+}
+
+const Map<String, String> searchPageChiplist = const {
+  '': 'En İyi Sonuçlar',
+  'artist': 'Sanatçılar',
+  'track': 'Şarkılar',
+  'album': 'Albümler',
+};
+const Map<String, String> libraryChiplist = const {
+  'playlist': 'Çalma Listeleri',
+  'podcast': "Podcast'ler ve programlar",
+  'album': 'Albümler',
+  'artist': "Sanatçılar",
+};
+
+const kPodcastsAndPrograms = "Podcast'ler ve programlar";
 const kMainColor = Color(0xff292929);
 const kPlayerNarrowHeight = 55.0;
 const kPlayerElapsedTimeNarrowHeight = 2.0;

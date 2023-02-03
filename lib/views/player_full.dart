@@ -1,418 +1,344 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_reader.dart';
 import 'package:flutter_lyric/lyrics_reader_model.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spotify_clone/components/player_scroller.dart';
-import 'package:spotify_clone/controllers/player_controller.dart';
-import 'package:spotify_clone/services/lyrics_service.dart';
+import 'package:spotify_clone/providers/player_provider.dart';
+import 'package:spotify_clone/providers/playlist_provider.dart';
 
 import 'package:spotify_clone/views/views.dart';
 
 class PlayerFull extends StatelessWidget {
   PlayerFull({Key? key}) : super(key: key);
 
-  final kHeaderTitleStyle = TextStyle(fontSize: 10, letterSpacing: 1);
-  final kAlbumNameStyle = TextStyle(fontSize: 14, fontWeight: FontWeight.bold);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: GetBuilder(
-            init: PlayerController(),
-            builder: (PlayerController controller) => Stack(
-                  children: [
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          AppBar(
-                            leading: IconButton(
-                              icon: Icon(Icons.expand_more),
-                              onPressed: Get.back,
-                            ),
-                            centerTitle: true,
-                            title: Column(
-                              children: [
-                                Text(
-                                  'ALBÜMDEN ÇALINIYOR',
-                                  style: kHeaderTitleStyle,
-                                ),
-                                Text(
-                                  controller.track!.album.title,
-                                  style: kAlbumNameStyle,
-                                )
-                              ],
-                            ),
-                            actions: [
-                              IconButton(
-                                icon: Icon(Icons.more_vert),
-                                onPressed: () {},
-                              )
-                            ],
-                          ),
-                          Container(
-                            height: 470,
-                            child: PlayerScroller(),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: PlayerControls(),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: LyricsCard(),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                )));
+        body: Stack(
+      children: [
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              const PlayerFullAppBar(),
+              Container(
+                height: MediaQuery.of(context).size.height / 1.8,
+                child: const PlayerScroller(),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: const PlayerControls(),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: LyricsCard(),
+              )
+            ],
+          ),
+        ),
+      ],
+    ));
+  }
+}
+
+class PlayerFullAppBar extends ConsumerWidget {
+  const PlayerFullAppBar({Key? key}) : super(key: key);
+
+  final kHeaderTitleStyle = const TextStyle(fontSize: 10, letterSpacing: 1);
+  final kAlbumNameStyle =
+      const TextStyle(fontSize: 14, fontWeight: FontWeight.bold);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    print('PlayerFullAppBar');
+    final currentTrack = ref.watch(currentTrackProvider);
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      leading: IconButton(
+        icon: Icon(Icons.expand_more),
+        onPressed: Navigator.of(context).pop,
+      ),
+      centerTitle: true,
+      title: Column(
+        children: [
+          Text(
+            'ALBÜMDEN ÇALINIYOR',
+            style: kHeaderTitleStyle,
+          ),
+          Text(
+            currentTrack!.album.title,
+            style: kAlbumNameStyle,
+          )
+        ],
+      ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.more_vert),
+          onPressed: () {},
+        )
+      ],
+    );
   }
 }
 
 class PlayerControls extends StatelessWidget {
-  PlayerControls({Key? key}) : super(key: key);
+  const PlayerControls({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return GetBuilder(
-        init: PlayerController(),
-        builder: (PlayerController controller) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            controller.track!.title,
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            controller.track!.artist.name,
-                            style: TextStyle(fontSize: 15, color: Colors.grey),
-                          )
-                        ],
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          controller.toggleLike();
-                        },
-                        icon: Icon(
-                            controller.track!.liked
-                                ? Icons.favorite
-                                : Icons.favorite_outline,
-                            color: controller.track!.liked
-                                ? Colors.green
-                                : Colors.white),
-                      ),
-                    ],
-                  ),
-                  Obx(
-                    () => Slider(
-                        inactiveColor: Colors.black12,
-                        activeColor: Color.fromARGB(255, 61, 61, 61),
-                        value: controller.time.value.toDouble(),
-                        max: controller.track!.pDuration.inSeconds.toDouble(),
-                        onChangeEnd: (value) => controller.seek(value.toInt()),
-                        onChanged: (double value) =>
-                            controller.time.value = value.toInt()),
-                  ),
-                  Obx(() => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(controller.elapsedTimeString,
-                                style: kPlayerTimeStringStyle),
-                            Text(controller.trackDurationString,
-                                style: kPlayerTimeStringStyle),
-                          ],
-                        ),
-                      )),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                          iconSize: 30,
-                          onPressed: controller.toggleShuffle,
-                          icon: controller.isShuffleOpen
-                              ? Icon(
-                                  Icons.shuffle,
-                                  color: Colors.green,
-                                )
-                              : Icon(Icons.shuffle)),
-                      IconButton(
-                          iconSize: 50,
-                          onPressed: () {
-                            controller.previous();
-                          },
-                          icon: Icon(Icons.skip_previous_sharp)),
-                      Container(
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                        child: IconButton(
-                            iconSize: 50,
-                            onPressed: () {
-                              controller.togglePlay();
-                            },
-                            icon: Icon(
-                              controller.isPlaying
-                                  ? Icons.pause
-                                  : Icons.play_arrow,
-                              size: 40,
-                            ),
-                            color: Colors.black),
-                      ),
-                      IconButton(
-                          iconSize: 50,
-                          onPressed: () {
-                            controller.next();
-                          },
-                          icon: Icon(Icons.skip_next_sharp)),
-                      IconButton(
-                        iconSize: 30,
-                        onPressed: () {
-                          controller.toggleRepetition();
-                        },
-                        icon: controller.isRepeated
-                            ? Icon(
-                                Icons.repeat,
-                                color: Colors.green,
-                              )
-                            : Icon(Icons.repeat),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        iconSize: 20,
-                        onPressed: () {},
-                        icon: Icon(Icons.tv),
-                      ),
-                      IconButton(
-                        iconSize: 20,
-                        onPressed: () {
-                          showBottomSheet(
-                            context: context,
-                            builder: (_) => Container(
-                              color: kMainBackColor,
-                              height: Get.height,
-                              child: Column(
-                                children: [
-                                  Header(),
-                                  //   Expanded(
-                                  //     child: ReorderableListView(
-                                  //       header: Column(
-                                  //         children: [
-                                  //           Row(
-                                  //             children: [
-                                  //               Text('Şimdi çalınıyor'),
-                                  //             ],
-                                  //           ),
-                                  //           TrackTile(
-                                  //             player.track,
-                                  //             showAlbumArt: true,
-                                  //           ),
-                                  //         ],
-                                  //       ),
-                                  //       children: playlists[0]
-                                  //           .tracks
-                                  //           .map((e) =>
-                                  //               TrackTile(e, key: Key(e.id.toString())))
-                                  //           .toList(),
-                                  //       onReorder: (oldIndex, newIndex) {
-                                  //         var old = playlists[0].tracks[oldIndex];
-                                  //         var nedw = playlists[0].tracks[newIndex];
-                                  //         playlists[0].tracks[newIndex] = old;
-
-                                  //         playlists[0].tracks[oldIndex] = nedw;
-                                  //       },
-                                  //     ),
-                                  //   )
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                        icon: Icon(Icons.playlist_play),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ));
+    print('PlayerControls');
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Column(
+        children: [
+          const _CurrentTrackInfoFull(),
+          SizedBox(height: 20),
+          const _PlayerSeekBar(),
+          const _PlayerDurationRow(),
+          const _PlayerControls(),
+          const _DevicesAndPlaylistRow()
+        ],
+      ),
+    );
   }
 }
 
-class Header extends StatelessWidget {
-  Header({
+class _PlayerDurationRow extends ConsumerWidget {
+  const _PlayerDurationRow({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          StreamBuilder<Duration?>(
+              stream: ref.read(audioPlayerProvider).onPositionChanged,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Text('0:00', style: kPlayerTimeStringStyle);
+                }
+                return Text(snapshot.data!.trackTime,
+                    style: kPlayerTimeStringStyle);
+              }),
+          Text(ref.watch(currentTrackProvider)!.pDuration.trackTime,
+              style: kPlayerTimeStringStyle),
+        ],
+      ),
+    );
+  }
+}
+
+class _DevicesAndPlaylistRow extends StatelessWidget {
+  const _DevicesAndPlaylistRow({
     Key? key,
   }) : super(key: key);
 
-  final kHeaderTitleStyle = TextStyle(fontSize: 12, letterSpacing: 1);
-  final kAlbumNameStyle = TextStyle(fontSize: 14, fontWeight: FontWeight.bold);
   @override
   Widget build(BuildContext context) {
-    return GetBuilder(
-      init: PlayerController(),
-      builder: (PlayerController controller) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: Icon(
-                Icons.arrow_drop_down_circle_sharp,
-              )),
-          Column(
-            children: [
-              Text(
-                'ALBÜMDEN ÇALINIYOR',
-                style: kHeaderTitleStyle,
-              ),
-              Text(
-                controller.track!.album.title,
-                style: kAlbumNameStyle,
-              )
-            ],
-          ),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.more_vert,
-              )),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          iconSize: 20,
+          onPressed: () {},
+          icon: Icon(Icons.tv),
+        ),
+        IconButton(
+          iconSize: 20,
+          icon: Icon(Icons.playlist_play),
+          onPressed: () {
+            // TODO: add reorderable playlist bottomsheet
+          },
+        )
+      ],
     );
   }
 }
 
-class LyricsCard extends StatefulWidget {
-  const LyricsCard({key});
-
+class _PlayerControls extends ConsumerWidget {
+  const _PlayerControls();
   @override
-  State<LyricsCard> createState() => _LyricsCardState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final playerState = ref.watch(playerStateProvider);
+    final player = ref.watch(playerStateProvider.notifier);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+            iconSize: 30,
+            onPressed: player.toggleShuffle,
+            icon: playerState.shuffleEnabled
+                ? Icon(Icons.shuffle, color: Colors.green)
+                : Icon(Icons.shuffle)),
+        IconButton(
+            iconSize: 50,
+            onPressed: player.previous,
+            icon: Icon(Icons.skip_previous)),
+        Container(
+          decoration:
+              BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+          child: IconButton(
+              iconSize: 50,
+              onPressed: player.togglePlay,
+              icon:
+                  Icon(playerState.isPlaying ? Icons.pause : Icons.play_arrow),
+              color: Colors.black),
+        ),
+        IconButton(
+            iconSize: 50, onPressed: player.next, icon: Icon(Icons.skip_next)),
+        IconButton(
+          iconSize: 30,
+          onPressed: player.toggleRepetition,
+          icon: playerState.repeatEnabled
+              ? Icon(Icons.repeat, color: Colors.green)
+              : Icon(Icons.repeat),
+        )
+      ],
+    );
+  }
 }
 
-class LyUI extends UINetease {
-  LyUI()
-      : super(
-          lyricAlign: LyricAlign.LEFT,
-          defaultSize: 30,
-          otherMainSize: 20,
-          defaultExtSize: 10,
-        );
+class _CurrentTrackInfoFull extends ConsumerWidget {
+  const _CurrentTrackInfoFull();
   @override
-  Color getLyricHightlightColor() {
-    return Colors.white;
+  Widget build(BuildContext context, WidgetRef ref) {
+    print('_CurrentTrackInfoFull');
+    final currentTrack = ref.watch(currentTrackProvider);
+    final currentTrackNotifier = ref.watch(currentTrackProvider.notifier);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width / 1.4,
+              child: Text(
+                currentTrack!.title,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Text(
+              currentTrack.artist.name,
+              style: TextStyle(fontSize: 15, color: Colors.grey),
+            )
+          ],
+        ),
+        IconButton(
+          onPressed: currentTrackNotifier.toggleLike,
+          icon: Icon(
+              currentTrack.liked ? Icons.favorite : Icons.favorite_outline,
+              color: currentTrack.liked ? Colors.green : Colors.white),
+        ),
+      ],
+    );
   }
-
-  @override
-  TextStyle getPlayingMainTextStyle() {
-    return TextStyle(
-        fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white);
-  }
-
-  @override
-  TextStyle getOtherMainTextStyle() {
-    return TextStyle(
-        fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white60);
-  }
-
-  @override
-  bool get highlight => true;
-  @override
-  double get lineGap => 10;
 }
 
-class _LyricsCardState extends State<LyricsCard> {
+class _PlayerSeekBar extends ConsumerWidget {
+  const _PlayerSeekBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    print('_PlayerSeekBar');
+    final currentTrack = ref.watch(currentTrackProvider);
+    return StreamBuilder<Duration?>(
+      stream: ref.read(audioPlayerProvider).onPositionChanged,
+      builder: (context, snapshot) {
+        return Slider(
+            value: !snapshot.hasData ? 0 : snapshot.data!.inSeconds.toDouble(),
+            max: currentTrack!.pDuration.inSeconds.toDouble(),
+            onChangeEnd: (value) => ref
+                .read(audioPlayerProvider)
+                .seek(Duration(seconds: value.toInt())),
+            onChanged: (double value) => 0);
+      },
+    );
+  }
+}
+
+class LyricsCard extends ConsumerWidget {
+  LyricsCard({key});
+
   final lyricUI = LyUI();
-  String lrc = '';
 
-  bool isLoading = true;
   LyricsReaderModel _getLyricModel(String lrc) =>
       LyricsModelBuilder.create().bindLyricToMain(lrc).getModel();
-  PlayerController? player;
-  @override
-  void initState() {
-    super.initState();
-    player = Get.find<PlayerController>();
-    player!.onPositionChanged = () {
-      setState(() {});
-    };
-    fetch();
-  }
 
-  void fetch() async {
-    lrc = await LyricsifyLyricsFinder()
-        .getLrc(player!.track!.title, player!.track!.artist.name);
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  double _offset = 0;
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 30),
-      padding: const EdgeInsets.only(left: 10, top: 5),
-      height: 370,
-      decoration: BoxDecoration(
-          color: Colors.red, borderRadius: BorderRadius.circular(10)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Şarkı Sözleri',
-                    style: Theme.of(context).textTheme.button),
-                IconButton(
-                    onPressed: () {}, icon: Icon(Icons.fullscreen_rounded))
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 10,
-            child: Visibility(
-              visible: !isLoading,
-              replacement: Center(child: CircularProgressIndicator()),
-              child: LyricsReader(
-                model: _getLyricModel(lrc),
-                position: player!.timeInMilliseconds + (_offset * 100).toInt(),
-                lyricUi: lyricUI,
-                playing: player!.isPlaying,
-                size: Size(
-                    double.infinity, MediaQuery.of(context).size.height / 2),
-                emptyBuilder: () => Center(
-                  child: Text(
-                    "No lyrics",
-                    style: lyricUI.getOtherMainTextStyle(),
+  Widget build(BuildContext context, WidgetRef ref) {
+    print('LyricsCard');
+    return ref
+        .watch(lyricsProvider.call(ref.watch(currentTrackProvider)!))
+        .maybeWhen(
+          orElse: () => Container(),
+          data: (data) => data.isEmpty
+              ? Container()
+              : Container(
+                  margin: const EdgeInsets.only(
+                      left: 5, right: 5, top: 5, bottom: 30),
+                  padding: const EdgeInsets.only(left: 10, top: 5),
+                  height: 370,
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Şarkı Sözleri',
+                                style: Theme.of(context).textTheme.button),
+                            IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.fullscreen_rounded))
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                          flex: 10,
+                          child: StreamBuilder<Duration?>(
+                              stream: ref
+                                  .read(audioPlayerProvider)
+                                  .onPositionChanged,
+                              builder: (context, snapshot) {
+                                return LyricsReader(
+                                  model: !snapshot.hasData
+                                      ? _getLyricModel('')
+                                      : _getLyricModel(data),
+                                  position: !snapshot.hasData
+                                      ? 0
+                                      : snapshot.data!.inMilliseconds,
+                                  lyricUi: lyricUI,
+                                  playing:
+                                      ref.read(playerStateProvider).isPlaying,
+                                  size: Size(double.infinity,
+                                      MediaQuery.of(context).size.height / 2),
+                                  emptyBuilder: () => Center(
+                                    child: Text(
+                                      'No lyrics',
+                                      style: lyricUI.getOtherMainTextStyle(),
+                                    ),
+                                  ),
+                                );
+                              })),
+                      ActionChip(
+                          onPressed: () {},
+                          visualDensity: VisualDensity(vertical: -2),
+                          backgroundColor: Colors.red,
+                          avatar: Icon(
+                            Icons.share,
+                            size: 15,
+                          ),
+                          label: Text('PAYLAŞ'))
+                    ],
                   ),
                 ),
-              ),
-            ),
-          ),
-          ActionChip(
-              onPressed: () {},
-              visualDensity: VisualDensity(vertical: -2),
-              backgroundColor: Colors.red,
-              avatar: Icon(
-                Icons.share,
-                size: 15,
-              ),
-              label: Text('PAYLAŞ'))
-        ],
-      ),
-    );
+        );
   }
 }

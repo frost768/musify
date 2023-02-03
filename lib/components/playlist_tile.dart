@@ -22,10 +22,7 @@ class PlaylistTile extends StatelessWidget {
   final createContainer = Container(
     height: 60,
     width: 60,
-    child: Icon(
-      Icons.add,
-      size: 40,
-    ),
+    child: Icon(Icons.add, size: 40),
   );
 
   final String? coverUrl;
@@ -61,16 +58,8 @@ class PlaylistTile extends StatelessWidget {
               : isFavoriteList
                   ? favContainer
                   : playlistContainer,
-      title: Text(
-        title,
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      subtitle: subtitle == null
-          ? null
-          : Text(
-              subtitle!,
-              style: TextStyle(fontSize: 13),
-            ),
+      title: Text(title),
+      subtitle: subtitle == null ? null : Text(subtitle!),
     );
   }
 }

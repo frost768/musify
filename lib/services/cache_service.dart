@@ -8,17 +8,28 @@ class CacheService {
   factory CacheService() {
     return _instance;
   }
+  clear() {
+    _dir.listSync().forEach((file) {
+      if (file.statSync().type == FileSystemEntityType.file) {
+        file.delete();
+      }
+    });
+    _cache = {};
+  }
+
   CacheService._();
-  static late Directory _dir;
-  static Map<String, CacheEntry> _cache = {};
+  late Directory _dir;
+  Map<String, CacheEntry> _cache = {};
   bool isInCache(String videoId) => _cache.containsKey(videoId);
   CacheEntry get(String videoId) {
     return _cache[videoId]!;
   }
 
-  static List<String> get trackList =>
-      _cache.entries.map((e) => e.value.trackJson).toList();
-  static void init() {
+  List<String> get trackList => _cache.entries
+      .where((e) => e.key != 'editorial')
+      .map((e) => e.value.trackJson)
+      .toList();
+  void init() {
     getApplicationDocumentsDirectory().then((value) {
       _dir = value;
       var list = value.list();
@@ -50,7 +61,7 @@ class CacheService {
     await file.writeAsString(trackJson);
   }
 
-  Future<String> generatePath(String videoId) async {
+  String generatePath(String videoId) {
     final savePath = _dir.path + '/' + videoId + '.mp3';
     return savePath;
   }

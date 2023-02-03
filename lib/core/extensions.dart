@@ -1,3 +1,12 @@
+extension K on Duration {
+  String get trackTime =>
+      DateTime.fromMillisecondsSinceEpoch(this.inMilliseconds)
+          .toIso8601String()
+          .split('T')[1]
+          .split('.')[0]
+          .substring(4);
+}
+
 extension S on DateTime {
   String get ddMonthYYYY => '$day ${getMonthName(month)} $year';
 }

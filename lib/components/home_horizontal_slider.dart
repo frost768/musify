@@ -1,11 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:spotify_clone/components/artist_circle_card.dart';
 import 'package:spotify_clone/components/home_page_card.dart';
-import 'package:spotify_clone/models/artist.dart';
-import 'package:spotify_clone/models/track.dart';
-import 'package:spotify_clone/services/cache_service.dart';
 
 class HomeHorizontalSlider extends StatelessWidget {
   Widget? header;
