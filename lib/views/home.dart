@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:spotify_clone/components/bottom_nav_bar_height.dart';
 import 'package:spotify_clone/components/home_playlist_section.dart';
 import 'package:spotify_clone/components/home_recommendations.dart';
-import 'package:spotify_clone/core/consts.dart';
 import 'package:spotify_clone/core/strings.dart';
 
 class HomeView extends StatelessWidget {
@@ -36,7 +36,7 @@ class HomeView extends StatelessWidget {
         ),
         SliverToBoxAdapter(child: HomePlaylistSection()),
         SliverToBoxAdapter(child: HomeRecommendations()),
-        SliverToBoxAdapter(child: SizedBox(height: kBottomSideTotalHeight))
+        BottomNavBarHeight.sliver
       ]),
     );
   }
