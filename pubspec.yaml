@@ -23,13 +23,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  get:
   dio:
   audioplayers:
   youtube_explode_dart: ^1.12.3
   path_provider:
   flutter_lyric:
-
+  flutter_riverpod:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -65,12 +64,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  fonts:
+    - family: Gotham
+      fonts:
+        - asset: assets/fonts/GothamBold.ttf
+        - asset: assets/fonts/GothamBoldItalic.ttf
+        - asset: assets/fonts/GothamBook.ttf
+        - asset: assets/fonts/GothamBookItalic.ttf
+        - asset: assets/fonts/GothamLight.ttf
+        - asset: assets/fonts/GothamLightItalic.ttf
+        - asset: assets/fonts/GothamMedium.ttf
+        - asset: assets/fonts/GothamMediumItalic.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
