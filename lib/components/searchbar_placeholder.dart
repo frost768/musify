@@ -11,21 +11,26 @@ class SearchBarPlaceholder extends StatelessWidget {
       height: 50,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-          color: kMainColor, borderRadius: BorderRadius.circular(5)),
+        color: Theme.of(context).colorScheme.onBackground,
+        borderRadius: BorderRadius.circular(5),
+      ),
       child: GestureDetector(
         onTap: () => showSearch(context: context, delegate: Search()),
         child: Row(
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Icon(Icons.search),
+              child: Icon(
+                Icons.search,
+                color: Theme.of(context).colorScheme.background,
+              ),
             ),
             Text(
               searchBarPlaceholder,
               style: TextStyle(
-                  color: Colors.white70,
                   fontSize: 16,
-                  fontWeight: FontWeight.bold),
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.background),
             )
           ],
         ),

@@ -23,10 +23,10 @@ class HomeRecommendations extends StatelessWidget {
           homeUniqueSelections,
           style: Theme.of(context).textTheme.titleLarge,
         )),
-        HomeHorizontalSlider(
-            header: HomePageSliderCustomHeader(
-          artist: (Track.fromJson(CacheService().trackList.first)).artist,
-        )),
+        // HomeHorizontalSlider(
+        //     header: HomePageSliderCustomHeader(
+        //   artist: (Track.fromJson(CacheService().trackList.first)).artist,
+        // )),
         HomeHorizontalSlider(
             header: Text(
           homeRecentlyPlayed,

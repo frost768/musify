@@ -1,50 +1,29 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spotify_clone/models/search_result.dart';
-import 'package:spotify_clone/models/track.dart';
-import 'package:spotify_clone/models/genre.dart';
+
+import 'package:spotify_clone/models/models.dart';
+
 import 'package:spotify_clone/services/api_service.dart';
 import 'package:spotify_clone/services/lyrics_service.dart';
 
 class PlayListNotifier extends Notifier<List<Track>> {
   PlayListNotifier() : super();
+
   void addToPlaylist(Track track) {
     state = [...state, track];
+  }
+
+  void setPlaylist(List<Track> tracks) {
+    state = tracks;
+  }
+
+  void playFromAlbum(AlbumDetail album) {
+    state = album.trackList;
   }
 
   @override
   List<Track> build() {
     return [];
-  }
-}
-
-class CurrentTrackNotifier extends Notifier<Track?> {
-  CurrentTrackNotifier() : super();
-  void set(Track track) {
-    final index = ref.read(playListProvider).indexOf(track);
-    if (index >= 0) {
-      ref.read(indexProvider.notifier).set(index);
-    } else {
-      ref.read(playListProvider.notifier).addToPlaylist(track);
-      var i = ref.read(playListProvider).length - 1;
-      ref.read(indexProvider.notifier).set(i);
-    }
-    state = track;
-  }
-
-  @override
-  Track? build() {
-    if (ref.read(playListProvider).isEmpty) {
-      return null;
-    }
-    return ref.read(playListProvider)[ref.read(indexProvider)];
-  }
-
-  void toggleLike() {
-    ref.read(playListProvider)[ref.read(indexProvider)] = ref
-        .read(playListProvider)[ref.read(indexProvider)]
-        .copyWith(liked: !state!.liked);
-    state = ref.read(playListProvider)[ref.read(indexProvider)];
   }
 }
 
@@ -69,11 +48,18 @@ final audioPlayerProvider = Provider<AudioPlayer>((ref) {
   return audioPlayer;
 });
 
-final currentTrackProvider = NotifierProvider<CurrentTrackNotifier, Track?>(
-    () => CurrentTrackNotifier());
+var currentTrackProvider = Provider<Track?>((ref) {
+  var playlist = ref.watch(playListProvider);
+  if (playlist.isEmpty) {
+    return null;
+  }
+  return playlist[ref.watch(indexProvider)];
+});
 
 final lyricsProvider = FutureProvider.family<String, Track>((ref, track) =>
     LyricsifyLyricsFinder().getLrc(track.title, track.artist.name));
+final albumDetailsProvider = FutureProvider.family<AlbumDetail, int>(
+    (ref, albumId) => ApiService().albumDetails(albumId));
 
 final libraryFiltreredListProvider = Provider<List>((ref) {
   final filter = ref.read(libraryPageFilterProvider);
@@ -102,7 +88,13 @@ final indexProvider =
 class IndexNotifier extends StateNotifier<int> {
   StateNotifierProviderRef<IndexNotifier, int> ref;
   IndexNotifier(this.ref) : super(0);
-  void set(int i) => state = i % ref.read(playListProvider).length;
+  void set(int i) {
+    if (ref.read(playListProvider).length == 0) {
+      state = 0;
+    } else {
+      state = i % ref.read(playListProvider).length;
+    }
+  }
 }
 
 final genreProvider = FutureProvider<List<Genre>>(

@@ -39,7 +39,7 @@ class LibraryView extends StatelessWidget {
           padding: const EdgeInsets.only(left: 0),
           sliver: SliverList(
               delegate: SliverChildListDelegate([
-            OrderAndViewOptions(),
+            _OrderAndViewOptions(),
             PlaylistTile(
               libraryListTileLikedSongs,
               isFavoriteList: true,
@@ -70,14 +70,14 @@ class LibraryView extends StatelessWidget {
   }
 }
 
-class OrderAndViewOptions extends StatefulWidget {
-  const OrderAndViewOptions({key});
+class _OrderAndViewOptions extends StatefulWidget {
+  const _OrderAndViewOptions({key});
 
   @override
-  State<OrderAndViewOptions> createState() => _OrderAndViewOptionsState();
+  State<_OrderAndViewOptions> createState() => __OrderAndViewOptionsState();
 }
 
-class _OrderAndViewOptionsState extends State<OrderAndViewOptions> {
+class __OrderAndViewOptionsState extends State<_OrderAndViewOptions> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(

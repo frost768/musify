@@ -26,7 +26,7 @@ class CacheService {
   }
 
   List<String> get trackList => _cache.entries
-      .where((e) => e.key != 'editorial')
+      .where((e) => !e.key.contains('editorial') && !e.key.contains('album'))
       .map((e) => e.value.trackJson)
       .toList();
   void init() {
@@ -52,9 +52,9 @@ class CacheService {
 
   Future<void> set(
     String videoId,
-    String audioFilePath,
     String trackJson,
   ) async {
+    final audioFilePath = generatePath(videoId);
     _cache[videoId] = CacheEntry(videoId, audioFilePath, trackJson);
     File file = File(_dir.path + '/' + videoId + '.json');
 
@@ -64,6 +64,10 @@ class CacheService {
   String generatePath(String videoId) {
     final savePath = _dir.path + '/' + videoId + '.mp3';
     return savePath;
+  }
+
+  wrap(Function function) {
+    return function;
   }
 }
 

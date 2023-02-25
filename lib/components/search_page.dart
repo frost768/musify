@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:spotify_clone/components/bottom_nav_bar.dart';
 import 'package:spotify_clone/components/explicit_widget.dart';
 import 'package:spotify_clone/components/filter_chips.dart';
-import 'package:spotify_clone/models/search_result.dart';
-import 'package:spotify_clone/models/track.dart';
+import 'package:spotify_clone/models/models.dart';
 import 'package:spotify_clone/providers/player_provider.dart';
 import 'package:spotify_clone/providers/playlist_provider.dart';
 import 'package:spotify_clone/services/api_service.dart';
+import 'package:spotify_clone/views/album_view.dart';
 
 class Search extends SearchDelegate {
   Search()
@@ -29,13 +30,19 @@ class Search extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return NewWidget(query: query);
+    return NewWidget(response);
   }
 
-  @override
-  Widget buildSuggestions(BuildContext context) {
+  SearchResult? response;
+  Widget fetch(context) {
+    Future.delayed(Duration(seconds: 1), () async {
+      print('called');
+      if (query.isNotEmpty) {
+        response = await ApiService().search(query);
+      }
+    });
     if (query.length > 0) {
-      return NewWidget(query: query);
+      return NewWidget(response);
     }
     if ([].isEmpty) {
       return Center(
@@ -62,15 +69,16 @@ class Search extends SearchDelegate {
       ],
     );
   }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return fetch(context);
+  }
 }
 
 class NewWidget extends StatefulWidget {
-  const NewWidget({
-    Key? key,
-    required this.query,
-  }) : super(key: key);
-
-  final String query;
+  final SearchResult? response;
+  const NewWidget(this.response, {Key? key}) : super(key: key);
 
   @override
   State<NewWidget> createState() => _NewWidgetState();
@@ -78,22 +86,8 @@ class NewWidget extends StatefulWidget {
 
 class _NewWidgetState extends State<NewWidget> {
   @override
-  void initState() {
-    super.initState();
-    fetch();
-  }
-
-  fetch() async {
-    if (widget.query.isNotEmpty) {
-      response = await ApiService().search(widget.query);
-      setState(() {});
-    }
-  }
-
-  SearchResult? response;
-  @override
   Widget build(BuildContext context) {
-    if (response == null) {
+    if (widget.response == null) {
       return Center(child: CircularProgressIndicator());
     }
 
@@ -107,29 +101,29 @@ class _NewWidgetState extends State<NewWidget> {
               var reachedEnd = notification.metrics.pixels >=
                   notification.metrics.maxScrollExtent - 200;
               if (reachedEnd) {
-                response!.nextResults.then((value) {
-                  response!.albumList.addAll(value.albumList);
-                  response!.artistList.addAll(value.artistList);
-                  response!.data.addAll(value.data);
-                  response!.next = value.next;
+                widget.response!.nextResults.then((value) {
+                  widget.response!.albumList.addAll(value.albumList);
+                  widget.response!.artistList.addAll(value.artistList);
+                  widget.response!.data.addAll(value.data);
+                  widget.response!.next = value.next;
                 });
               }
               setState(() {});
-              return response!.next == null;
+              return widget.response!.next == null;
             },
             child: Consumer(
               builder: (BuildContext context, WidgetRef ref, Widget? child) {
                 final filter = ref.watch(searchPageFilterProvider);
                 if (filter == 'album') {
-                  return AlbumSearchView(response: response);
+                  return AlbumSearchView(response: widget.response);
                 }
 
                 return ListView.builder(
-                    itemCount: response!.all
+                    itemCount: widget.response!.all
                         .where((e) => filter.isEmpty ? true : e.type == filter)
                         .length,
                     itemBuilder: (context, index) {
-                      var e = response!.all
+                      var e = widget.response!.all
                           .where(
                               (e) => filter.isEmpty ? true : e.type == filter)
                           .elementAt(index);
@@ -139,7 +133,7 @@ class _NewWidgetState extends State<NewWidget> {
             ),
           ),
         ),
-        // BottomNavBar()
+        BottomNavBar()
       ],
     );
   }
@@ -156,35 +150,40 @@ class AlbumSearchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
+        padding: EdgeInsets.all(10),
         mainAxisSpacing: 15,
         crossAxisSpacing: 15,
         crossAxisCount: 2,
         children: response!.albumList
-            .map((e) => GridTile(
-                  footer: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      e.title,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+            .map((e) => InkWell(
+                  onTap: () => Navigator.of(context).push(PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          AlbumView(albumId: e.id))),
+                  child: Card(
+                    child: GridTile(
+                      footer: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10)),
+                          color: Theme.of(context).colorScheme.background,
+                        ),
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          e.title,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  Theme.of(context).colorScheme.onBackground),
+                        ),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            image: DecorationImage(
+                                image: Image.network(e.coverBig).image)),
+                      ),
                     ),
-                  ),
-                  child: Container(
-                    foregroundDecoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [
-                            Colors.black,
-                            Colors.transparent,
-                          ],
-                          stops: [
-                            0.1,
-                            1,
-                          ]),
-                    ),
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: Image.network(e.coverBig).image)),
                   ),
                 ))
             .toList());
@@ -206,10 +205,12 @@ class SearchTile extends ConsumerWidget {
       case 'artist':
         return null;
       case 'track':
-        ref.read(playerStateProvider.notifier).play(track: e, fromSearch: true);
+        ref.read(playerStateProvider.notifier).play(track: e);
         break;
       default:
-        return null;
+        Navigator.of(ref.context).push(PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                AlbumView(albumId: e.id)));
     }
   }
 
@@ -272,7 +273,7 @@ class SearchTile extends ConsumerWidget {
       contentPadding: e.type == 'artist' ? const EdgeInsets.all(10) : null,
       leading: SizedBox(width: 60, height: 60, child: leading),
       title: Text(title,
-          style: ref.watch(currentTrackProvider)!.id == e.id
+          style: ref.watch(currentTrackProvider)?.id == e.id
               ? titleStyle.copyWith(color: Colors.green)
               : titleStyle),
       subtitle: subtitle,

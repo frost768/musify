@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:spotify_clone/core/strings.dart';
+import 'package:spotify_clone/models/track.dart';
 
-class PlayShuffleButton extends StatelessWidget {
-  PlayShuffleButton({
+class PlaylistPlayButton extends StatelessWidget {
+  final List<Track> tracks;
+  PlaylistPlayButton(
+    this.tracks, {
     Key? key,
   }) : super(key: key);
 
   final boxDecoration = BoxDecoration(
-      color: Colors.green.shade800,
-      borderRadius: BorderRadiusDirectional.all(Radius.circular(30)));
-  final textStyle =
-      TextStyle(letterSpacing: 1, fontSize: 15, fontWeight: FontWeight.bold);
+    shape: BoxShape.circle,
+    color: Colors.green.shade900,
+  );
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200,
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-      decoration: boxDecoration,
-      child: Center(
-          child: Text(
-        playShuffle,
-        style: textStyle,
-      )),
-    );
+        decoration: boxDecoration,
+        child: IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.play_arrow,
+              size: 35,
+            )));
   }
 }

@@ -49,7 +49,6 @@ class PlayerFullAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('PlayerFullAppBar');
     final currentTrack = ref.watch(currentTrackProvider);
     return AppBar(
       backgroundColor: Colors.transparent,
@@ -71,12 +70,7 @@ class PlayerFullAppBar extends ConsumerWidget {
           )
         ],
       ),
-      actions: [
-        IconButton(
-          icon: Icon(Icons.more_vert),
-          onPressed: () {},
-        )
-      ],
+      actions: [IconButton(icon: Icon(Icons.more_vert), onPressed: () => {})],
     );
   }
 }
@@ -93,6 +87,7 @@ class PlayerControls extends StatelessWidget {
           const _CurrentTrackInfoFull(),
           SizedBox(height: 20),
           const _PlayerSeekBar(),
+          SizedBox(height: 20),
           const _PlayerDurationRow(),
           const _PlayerControls(),
           const _DevicesAndPlaylistRow()
@@ -113,15 +108,13 @@ class _PlayerDurationRow extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           StreamBuilder<Duration?>(
+              initialData: ref.read(playerStateProvider).position,
               stream: ref.read(audioPlayerProvider).onPositionChanged,
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Text('0:00', style: kPlayerTimeStringStyle);
-                }
                 return Text(snapshot.data!.trackTime,
                     style: kPlayerTimeStringStyle);
               }),
-          Text(ref.watch(currentTrackProvider)!.pDuration.trackTime,
+          Text(ref.read(currentTrackProvider)!.pDuration.trackTime,
               style: kPlayerTimeStringStyle),
         ],
       ),
@@ -166,25 +159,15 @@ class _PlayerControls extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
-            iconSize: 30,
-            onPressed: player.toggleShuffle,
-            icon: playerState.shuffleEnabled
-                ? Icon(Icons.shuffle, color: Colors.green)
-                : Icon(Icons.shuffle)),
+          iconSize: 30,
+          onPressed: player.toggleShuffle,
+          icon: Icon(Icons.shuffle),
+        ),
         IconButton(
             iconSize: 50,
             onPressed: player.previous,
             icon: Icon(Icons.skip_previous)),
-        Container(
-          decoration:
-              BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-          child: IconButton(
-              iconSize: 50,
-              onPressed: player.togglePlay,
-              icon:
-                  Icon(playerState.isPlaying ? Icons.pause : Icons.play_arrow),
-              color: Colors.black),
-        ),
+        _PlayerFullPlayButton(player: player, playerState: playerState),
         IconButton(
             iconSize: 50, onPressed: player.next, icon: Icon(Icons.skip_next)),
         IconButton(
@@ -199,13 +182,37 @@ class _PlayerControls extends ConsumerWidget {
   }
 }
 
+class _PlayerFullPlayButton extends StatelessWidget {
+  const _PlayerFullPlayButton({
+    Key? key,
+    required this.player,
+    required this.playerState,
+  }) : super(key: key);
+
+  final PlayerNotifier player;
+  final Player playerState;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Theme.of(context).colorScheme.inverseSurface),
+      child: IconButton(
+          iconSize: 50,
+          onPressed: player.togglePlay,
+          icon: Icon(playerState.isPlaying ? Icons.pause : Icons.play_arrow),
+          color: Theme.of(context).colorScheme.surface),
+    );
+  }
+}
+
 class _CurrentTrackInfoFull extends ConsumerWidget {
   const _CurrentTrackInfoFull();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     print('_CurrentTrackInfoFull');
     final currentTrack = ref.watch(currentTrackProvider);
-    final currentTrackNotifier = ref.watch(currentTrackProvider.notifier);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -227,7 +234,7 @@ class _CurrentTrackInfoFull extends ConsumerWidget {
           ],
         ),
         IconButton(
-          onPressed: currentTrackNotifier.toggleLike,
+          onPressed: () {},
           icon: Icon(
               currentTrack.liked ? Icons.favorite : Icons.favorite_outline,
               color: currentTrack.liked ? Colors.green : Colors.white),
@@ -243,12 +250,13 @@ class _PlayerSeekBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     print('_PlayerSeekBar');
-    final currentTrack = ref.watch(currentTrackProvider);
+    final currentTrack = ref.read(currentTrackProvider);
     return StreamBuilder<Duration?>(
+      initialData: ref.read(playerStateProvider).position,
       stream: ref.read(audioPlayerProvider).onPositionChanged,
       builder: (context, snapshot) {
         return Slider(
-            value: !snapshot.hasData ? 0 : snapshot.data!.inSeconds.toDouble(),
+            value: snapshot.data!.inSeconds.toDouble(),
             max: currentTrack!.pDuration.inSeconds.toDouble(),
             onChangeEnd: (value) => ref
                 .read(audioPlayerProvider)

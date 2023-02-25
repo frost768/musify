@@ -54,22 +54,22 @@ class _BottomNavBarState extends State<BottomNavBar> {
           PlayerNarrow(),
           Divider(
             height: 10,
+            color: Colors.transparent,
           ),
           BottomNavigationBar(
             onTap: (value) {
+              Navigator.of(context)
+                  .popUntil((route) => route.settings.name == 'Home');
               setState(() {
                 if (value == 1 && currentIndex == 1) {
                   showSearch(context: context, delegate: Search());
                 }
                 currentIndex = value;
               });
-
               onPageChange(value);
             },
             currentIndex: currentIndex,
             items: _icons,
-            selectedLabelStyle: TextStyle(fontSize: 10),
-            unselectedLabelStyle: TextStyle(fontSize: 10),
           ),
         ],
       ),

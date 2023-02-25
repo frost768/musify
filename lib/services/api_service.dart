@@ -1,9 +1,8 @@
 import 'dart:convert';
 
-import 'package:spotify_clone/models/genre.dart';
-import 'package:spotify_clone/models/search_result.dart';
+import 'package:spotify_clone/models/album_detail.dart';
+import 'package:spotify_clone/models/models.dart';
 import 'package:dio/dio.dart';
-import 'package:spotify_clone/models/track.dart';
 import 'package:spotify_clone/services/cache_service.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -18,14 +17,34 @@ class ApiService {
   ApiService._();
   final Dio _client = Dio(BaseOptions(baseUrl: "https://api.deezer.com"));
   final _ytClient = YoutubeExplode();
+  Future<AlbumDetail> albumDetails(int albumId) async {
+    if (_cacheService.isInCache('album_$albumId')) {
+      return AlbumDetail.fromJson(
+          _cacheService.get('/album/$albumId').trackJson);
+    }
+    final response = await _client.get<Map<String, dynamic>>('/album/$albumId');
+    _cacheService.set('album_$albumId', jsonEncode(response.data!));
+
+    return AlbumDetail.fromMap(response.data!);
+  }
+
+  Future<Chart> getChart() async {
+    if (_cacheService.isInCache('chart')) {
+      return Chart.fromJson(jsonDecode(_cacheService.get('chart').trackJson));
+    }
+    final response = await _client.get<Map<String, dynamic>>('/chart');
+    _cacheService.set('chart', jsonEncode(response.data!));
+
+    return Chart.fromMap(response.data!);
+  }
+
   Future<List<Genre>> getGenres() async {
     if (_cacheService.isInCache('editorial')) {
       return Genre.fromList(
           jsonDecode(_cacheService.get('editorial').trackJson));
     }
     final response = await _client.get<Map<String, dynamic>>('/editorial');
-    _cacheService.set('editorial', _cacheService.generatePath('editorial'),
-        jsonEncode(response.data!));
+    _cacheService.set('editorial', jsonEncode(response.data!));
 
     return Genre.fromList(response.data!);
   }
@@ -55,16 +74,16 @@ class ApiService {
         await _ytClient.videos.streamsClient.getManifest(response.first.id);
     final audio = manifest.audio.withHighestBitrate();
     final savePath = _cacheService.generatePath(videoId);
-    _client
-        .downloadUri(
-      audio.url,
-      savePath,
-      options: Options(contentType: 'application/octet-stream'),
-      onReceiveProgress: (count, total) => print((count / total) * 100),
-    )
-        .then((value) {
-      _cacheService.set(videoId, savePath, track.toJson());
-    });
+    // _client
+    //     .downloadUri(
+    //   audio.url,
+    //   savePath,
+    //   options: Options(contentType: 'application/octet-stream'),
+    //   onReceiveProgress: (count, total) => print((count / total) * 100),
+    // )
+    //     .then((value) {
+    //   _cacheService.set(videoId, track.toJson());
+    // });
     return CacheEntry(videoId, audio.url.toString(), track.toJson());
   }
 }

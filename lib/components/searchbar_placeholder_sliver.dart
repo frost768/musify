@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_clone/components/searchbar_placeholder.dart';
-import 'package:spotify_clone/core/consts.dart';
 
 class SearchBarPlaceholderSliver extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(color: kMainBackColor, child: SearchBarPlaceholder());
+    return SearchBarPlaceholder();
   }
 
   @override

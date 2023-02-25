@@ -12,14 +12,15 @@ class PlayerNarrow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     print('PlayerNarrow');
     final currentTrack = ref.watch(currentTrackProvider);
-    final currentTrackNotifier = ref.watch(currentTrackProvider.notifier);
     final player = ref.watch(playerStateProvider.notifier);
     final playerState = ref.watch(playerStateProvider);
+    print(currentTrack);
     if (currentTrack == null) return Container();
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-          color: Colors.grey.shade800, borderRadius: BorderRadius.circular(5)),
+          color: Theme.of(context).colorScheme.onSecondary,
+          borderRadius: BorderRadius.circular(5)),
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,22 +30,20 @@ class PlayerNarrow extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const AlbumArtNarrowPlayer(),
+                const _AlbumArtNarrowPlayer(),
                 Expanded(flex: 2, child: PlayerScroller(isNarrow: true)),
                 Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       IconButton(
-                        onPressed: () {
-                          currentTrackNotifier.toggleLike();
-                        },
+                        onPressed: () {},
                         icon: Icon(
                           currentTrack.liked
                               ? Icons.favorite
                               : Icons.favorite_outline,
-                          color:
-                              currentTrack.liked ? Colors.green : Colors.white,
+                          // color:
+                          //     currentTrack.liked ? Colors.green : Colors.white,
                           size: 30,
                         ),
                       ),
@@ -79,8 +78,6 @@ class _PlayerNarrowBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ;
-    print('_PlayerNarrowBar');
     return StreamBuilder<Duration?>(
         stream: ref.read(audioPlayerProvider).onPositionChanged,
         builder: (context, snapshot) {
@@ -94,5 +91,26 @@ class _PlayerNarrowBar extends ConsumerWidget {
                         ref.watch(currentTrackProvider)!.pDuration.inSeconds),
           );
         });
+  }
+}
+
+class _AlbumArtNarrowPlayer extends ConsumerWidget {
+  const _AlbumArtNarrowPlayer({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      height: 40,
+      width: 40,
+      margin: const EdgeInsets.only(right: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        image: DecorationImage(
+            image:
+                Image.network(ref.watch(currentTrackProvider)!.album.coverBig)
+                    .image),
+        borderRadius: BorderRadius.circular(5),
+      ),
+    );
   }
 }

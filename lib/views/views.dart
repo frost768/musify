@@ -1,6 +1,7 @@
 export 'create_playlist.dart';
 export 'home.dart';
 export 'library.dart';
+export 'album_view.dart';
 export 'player_full.dart';
 export 'liked_songs.dart';
 export 'search.dart';

@@ -12,22 +12,6 @@ class SearchView extends ConsumerWidget {
   final dec =
       BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(5));
 
-  final boxDecoration = BoxDecoration(
-      gradient: RadialGradient(
-    center: Alignment.topLeft,
-    radius: 3,
-    stops: [0, 0.3],
-    colors: [Colors.white10, kMainBackColor],
-  ));
-
-  final gridTitleStyle =
-      const TextStyle(fontWeight: FontWeight.bold, fontSize: 18);
-
-  final gridTitleMargin = const EdgeInsets.symmetric(vertical: 20);
-
-  final searchViewSliverSearchStyle =
-      const TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
   Color get randomColor => Color.fromARGB(
       255, Random().nextInt(255), Random().nextInt(255), Random().nextInt(255));
   @override
@@ -44,19 +28,20 @@ class SearchView extends ConsumerWidget {
                 padding: EdgeInsets.fromLTRB(0, 40, 40, 20),
                 child: Text(
                   searchViewSliverSearch,
-                  style: searchViewSliverSearchStyle,
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground),
                 ),
               ),
             ),
             SliverPersistentHeader(
                 pinned: true, delegate: SearchBarPlaceholderSliver()),
             SliverToBoxAdapter(
-              child: Center(
-                child: Container(
-                  margin: gridTitleMargin,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Center(
                   child: Text(
                     searchViewBrowseAll,
-                    style: gridTitleStyle,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
               ),
@@ -68,15 +53,26 @@ class SearchView extends ConsumerWidget {
                       crossAxisCount: 2,
                       mainAxisSpacing: 20,
                       crossAxisSpacing: 20,
-                      childAspectRatio: 3 / 2,
-                      children: data
-                          .map((e) => Container(
-                                decoration: dec.copyWith(
-                                  color: randomColor,
-                                ),
-                                child: _FeaturedCard(e.pictureXl, e.name),
-                              ))
-                          .toList(),
+                      childAspectRatio: 3 / 1.7,
+                      children: [
+                        Container(
+                            decoration: dec.copyWith(color: randomColor),
+                            child: _FeaturedCard(
+                                data.last.pictureXl, data.last.name)),
+                        Container(
+                            decoration: dec.copyWith(color: randomColor),
+                            child: _FeaturedCard(
+                                data.first.pictureXl, 'Top Listeler')),
+                        ...data
+                            .take(data.length - 1)
+                            .map((e) => Container(
+                                  decoration: dec.copyWith(
+                                    color: randomColor,
+                                  ),
+                                  child: _FeaturedCard(e.pictureXl, e.name),
+                                ))
+                            .toList()
+                      ],
                     )),
             BottomNavBarHeight.sliver
           ],
@@ -115,9 +111,14 @@ class _FeaturedCardText extends StatelessWidget {
       child: Text(
         genreName,
         style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            shadows: [BoxShadow(spreadRadius: 50, offset: Offset(2, 2))]),
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+          color: Colors.white,
+          shadows: [
+            BoxShadow(
+                spreadRadius: 50, offset: Offset(2, 2), color: Colors.black)
+          ],
+        ),
       ),
     );
   }

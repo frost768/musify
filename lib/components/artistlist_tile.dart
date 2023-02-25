@@ -8,15 +8,14 @@ class ArtistListTile extends ListTile {
 
   ArtistListTile(this.name, this.artistPicUrl)
       : super(
-            contentPadding: const EdgeInsets.all(10),
-            leading: CircleAvatar(
-              radius: 40,
-              backgroundImage: Image.network(artistPicUrl).image,
-            ),
-            title: Text(
-              name,
-              style: kLibraryTabStyle,
-            ),
-            trailing:
-                IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)));
+          contentPadding: const EdgeInsets.all(10),
+          leading: CircleAvatar(
+            radius: 30,
+            backgroundImage: Image.network(artistPicUrl).image,
+          ),
+          title: Text(
+            name,
+            style: kLibraryTabStyle,
+          ),
+        );
 }

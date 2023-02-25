@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spotify_clone/core/strings.dart';
+import 'package:spotify_clone/models/track.dart';
 import 'package:spotify_clone/providers/player_provider.dart';
 import 'package:spotify_clone/providers/playlist_provider.dart';
 import 'package:spotify_clone/views/player_full.dart';
@@ -32,10 +33,15 @@ class _PlayerScrollerState extends ConsumerState<PlayerScroller> {
     );
   }
 
+  final TextStyle kSongNameStyle =
+      const TextStyle(fontSize: 13, fontWeight: FontWeight.bold);
+  final TextStyle kArtistStyle =
+      const TextStyle(fontSize: 13, color: Colors.grey);
   @override
   Widget build(BuildContext context) {
     print('PlayerScroller');
-    final _controller = PageController(initialPage: ref.watch(indexProvider));
+    var currIndex = ref.watch(indexProvider);
+    final _controller = PageController(initialPage: currIndex);
     final playerState = ref.watch(playerStateProvider);
     var player = ref.watch(playerStateProvider.notifier);
     final playlist = ref.watch(playListProvider);
@@ -52,85 +58,48 @@ class _PlayerScrollerState extends ConsumerState<PlayerScroller> {
       itemCount: playerState.repeatEnabled ? null : playlist.length,
       itemBuilder: (context, index) {
         if (widget.isNarrow) {
-          return GestureDetector(
-            onTap: () =>
-                Navigator.of(context).push(downToUpTranstition(PlayerFull())),
-            child: _CurrentTrackInfo(),
-          );
+          return _narrow(context, playlist, index);
         }
-        print(index);
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Image.network(
-            ref
-                .watch(playListProvider)[
-                    index % ref.watch(playListProvider).length]
-                .album
-                .coverXl,
+            playlist[index % playlist.length].album.coverXl,
           ),
         );
       },
     );
   }
-}
 
-class _CurrentTrackInfo extends ConsumerWidget {
-  final TextStyle kSongNameStyle = const TextStyle(
-      color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold);
-  final TextStyle kArtistStyle =
-      const TextStyle(fontSize: 13, color: Colors.grey);
-  const _CurrentTrackInfo({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var playList = ref.watch(playListProvider);
-    var index = ref.watch(indexProvider);
-    if (playList.isEmpty) return Container();
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 160,
-          child: Text(
-            playList[index % playList.length].title,
-            style: kSongNameStyle,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        Text(
-          playList[index % playList.length].artist.name,
-          style: kArtistStyle,
-          overflow: TextOverflow.ellipsis,
-        ),
-        Offstage(
-          child: Text(
-            playerNarrowAvaiableDevices,
-            style: kSongNameStyle,
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class AlbumArtNarrowPlayer extends ConsumerWidget {
-  const AlbumArtNarrowPlayer({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      height: 40,
-      width: 40,
-      margin: const EdgeInsets.only(right: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        image: DecorationImage(
-            image:
-                Image.network(ref.watch(currentTrackProvider)!.album.coverBig)
-                    .image),
-        borderRadius: BorderRadius.circular(5),
-      ),
+  GestureDetector _narrow(
+      BuildContext context, List<Track> playlist, int index) {
+    return GestureDetector(
+      onTap: () =>
+          Navigator.of(context).push(downToUpTranstition(PlayerFull())),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 160,
+              child: Text(
+                playlist[index].title,
+                style: kSongNameStyle.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Text(
+              playlist[index].artist.name,
+              style: kArtistStyle,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Offstage(
+              child: Text(
+                playerNarrowAvaiableDevices,
+                style: kSongNameStyle,
+              ),
+            )
+          ]),
     );
   }
 }
