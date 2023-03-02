@@ -1,4 +1,4 @@
-# spotify_clone
+# Musify
 Based on Spotify ~~v8.5.68.904~~ v8.7.78.373
   ## Screens
     ✅ Home
